@@ -67,9 +67,9 @@ class LittleBookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /* if(bookInfo.imageUrl=="/img/cover-not-exists.png"){
-      bookInfo.imageUrl="https://1lib.pl/img/cover-not-exists.png";
-    }*/
+     if(bookInfo.imageUrl=="/img/cover-not-exists.png"){
+      bookInfo.imageUrl="https://i.imgur.com/1mECa0I.png";
+    }
     bool visiblepublisher = true;
     if (bookInfo.publisher == "not given") {
       visiblepublisher = false;
@@ -80,18 +80,21 @@ class LittleBookCard extends StatelessWidget {
       children: [
         GestureDetector(
             onTap: () => {
-                  API_Manager.getBookSiteFromId(bookInfo.bookID)
-                      .then((value) => {
-                            result = value
-                                .getElementsByClassName(
-                                    "lightbox details-book-cover checkBookDownloaded")
-                                .first
-                                .attributes['href'],
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ShowImage(result)))
-                          })
+              if(bookInfo.imageUrl!="https://i.imgur.com/1mECa0I.png"){
+                API_Manager.getBookSiteFromId(bookInfo.bookID)
+                    .then((value) =>
+                {
+                  result = value
+                      .getElementsByClassName(
+                      "lightbox details-book-cover checkBookDownloaded")
+                      .first
+                      .attributes['href'],
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShowImage(result)))
+                })
+              }
                 },
             child: Image.network(bookInfo.imageUrl)),
         Expanded(
@@ -148,7 +151,7 @@ class LittleBookCard extends StatelessWidget {
             child: Card(
               color: Color(0xff4f6773),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     child: Text(bookInfo.title,style: TextStyle(color: Colors.white60),),

@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
@@ -13,6 +16,33 @@ ScrollController scrollController;
 
 class _zLibBodyState extends State<zLibBody> {
   @override
+  Future<bool> exitDialoge() {
+    return showDialog(
+        context: context,
+        builder: (context)=>BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3,sigmaY: 3),
+          child: new AlertDialog(
+            backgroundColor: Colors.blueGrey,
+            elevation: 0,
+            title: Text("You sure?"),
+            content: Text("You really wanna leave so soon?"),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: Color(0xffD9B7AB))),
+            actions: [
+              MaterialButton(onPressed: (){
+                SystemNavigator.pop();
+              },
+                child: Text("EXIT",style: TextStyle(color: Color(0xffD9B7AB)),),
+              ),
+              MaterialButton(onPressed: (){
+                Navigator.of(context).pop(false);
+              },
+                child: Text("CANCEL",style: TextStyle(color: Color(0xffD9B7AB))),
+              ),
+            ],
+          ),
+        )
+    );
+  }
   void initState() {
     scrollController = new ScrollController()..addListener(_loadMore);
     super.initState();
@@ -57,105 +87,111 @@ class _zLibBodyState extends State<zLibBody> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: (){
+        exitDialoge();
+        return Future.value(false);
+      },
+      child: Scaffold(
 
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-            child: ListView.builder(
-                controller: scrollController,
-                itemCount: Utilities.bookList.length + 1,
-                itemBuilder: (context, index) {
-                  if (Utilities.bookList.length == 0) {
-                    return Container();
-                  }
-                  if (index == Utilities.bookList.length) {
-                    if(Utilities.bookList.length>=50){
-                      return LinearProgressIndicator(
-                        backgroundColor: Colors.grey[900],
-                        valueColor:
-                        new AlwaysStoppedAnimation<Color>(Colors.grey),
-                      );
-                    }
-                    else{
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+              child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: Utilities.bookList.length + 1,
+                  itemBuilder: (context, index) {
+                    if (Utilities.bookList.length == 0) {
                       return Container();
                     }
-                  }
+                    if (index == Utilities.bookList.length) {
+                      if(Utilities.bookList.length>=50){
+                        return LinearProgressIndicator(
+                          backgroundColor: Colors.grey[900],
+                          valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.grey),
+                        );
+                      }
+                      else{
+                        return Container();
+                      }
+                    }
 
-                  final item = Utilities.bookList[index];
-                  return LittleBookCard(
-                    bookInfo: Utilities.bookList[index],
-                    publisher: () {
-                      //klikanie w wydawce
-                      String bookName;
-                      setState(() {
-                        Utilities.PageNumber=1;
-                        bookName = Utilities.bookList[index].publisher;
-                        Utilities.lastSearch = Utilities.search + bookName;
-                        Utilities.lastSearch =
-                            Utilities.lastSearch.replaceAll("+", " ");
-                        //print(Utilities.lastSearch);
-                        Utilities.bookList.clear();
-                      });
-                      API_Manager.goToSearchSite(1)
-                          .then((value) => API_Manager.getBookList(value))
-                          .then((value) => setState(() {
-                                Utilities.bookList = value;
-                              }));
-                    }, //klikanie po autorze
-                    authorSearch: (String val) {
-                      setState(() {
+                    final item = Utilities.bookList[index];
+                    return LittleBookCard(
+                      bookInfo: Utilities.bookList[index],
+                      publisher: () {
+                        //klikanie w wydawce
+                        String bookName;
+                        setState(() {
+                          Utilities.PageNumber=1;
+                          bookName = Utilities.bookList[index].publisher;
+                          Utilities.lastSearch = Utilities.search + bookName;
+                          Utilities.lastSearch =
+                              Utilities.lastSearch.replaceAll("+", " ");
+                          //print(Utilities.lastSearch);
+                          Utilities.bookList.clear();
+                        });
+                        API_Manager.goToSearchSite(1)
+                            .then((value) => API_Manager.getBookList(value))
+                            .then((value) => setState(() {
+                                  Utilities.bookList = value;
+                                }));
+                      }, //klikanie po autorze
+                      authorSearch: (String val) {
+                        setState(() {
 
-                        Utilities.PageNumber=1;
-                        String siteUrl = Utilities.siteRoot + val;
-                        Utilities.lastSearch = siteUrl;
-                        Utilities.bookList.clear();
-                      });
-                      API_Manager.goToSearchSite(1)
-                          .then((value) => API_Manager.getBookList(value))
-                          .then((value) => setState(() {
-                                Utilities.bookList = value;
-                              }));
-                    },
-                  );
-                }),
+                          Utilities.PageNumber=1;
+                          String siteUrl = Utilities.siteRoot + val;
+                          Utilities.lastSearch = siteUrl;
+                          Utilities.bookList.clear();
+                        });
+                        API_Manager.goToSearchSite(1)
+                            .then((value) => API_Manager.getBookList(value))
+                            .then((value) => setState(() {
+                                  Utilities.bookList = value;
+                                }));
+                      },
+                    );
+                  }),
+            ),
           ),
-        ),
-        bottomSheet: Container(
-            color: Color(0xffd9b7ab),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 8,
-                        child: Container(
-                          color: Color(0xff8c6f72),
-                          child: TextField(
-                            onEditingComplete: () => enterBookName(), //text
-                            textAlign: TextAlign.center,
-                            controller: Utilities.textEditingController,
-                            cursorColor: Colors.white70,
-                            style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
-                            decoration: InputDecoration(
-                              hintText: "Book name goes here!",
-                              hintStyle: TextStyle(color: Colors.white70),
-                              border: InputBorder.none,
+          bottomSheet: Container(
+              color: Color(0xffd9b7ab),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 8,
+                          child: Container(
+                            color: Color(0xff8c6f72),
+                            child: TextField(
+                              onEditingComplete: () => enterBookName(), //text
+                              textAlign: TextAlign.center,
+                              controller: Utilities.textEditingController,
+                              cursorColor: Colors.white70,
+                              style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                hintText: "Book name goes here!",
+                                hintStyle: TextStyle(color: Colors.white70),
+                                border: InputBorder.none,
+                              ),
                             ),
-                          ),
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: MaterialButton(
-                            onPressed: ()=>enterBookName(),
-                            child: Icon(
-                              Icons.search,
-                              color: Color(0xff263740)
-                            )))
-                  ],
-                )
-              ],
-            )));
+                          )),
+                      Expanded(
+                          flex: 2,
+                          child: MaterialButton(
+                              onPressed: ()=>enterBookName(),
+                              child: Icon(
+                                Icons.search,
+                                color: Color(0xff263740)
+                              )))
+                    ],
+                  )
+                ],
+              ))),
+    );
   }
 }

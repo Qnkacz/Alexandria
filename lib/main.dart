@@ -5,6 +5,7 @@ import 'package:z_lib_app/SciHubBody.dart';
 import 'ZLibBody.dart';
 
 void main() async => {
+
       WidgetsFlutterBinding.ensureInitialized(),
       await FlutterDownloader.initialize(
           debug: true // optional: set false to disable printing logs to console
@@ -42,3 +43,5 @@ void main() async => {
         )
       ))
     };
+
+
