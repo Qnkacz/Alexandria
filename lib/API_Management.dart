@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
@@ -136,6 +137,31 @@ class API_Manager{
     } else {
       throw 'Could not launch $url';
     }
+  }
+  static Future<dynamic> GetSciHubResult(dom.Document document,dynamic context) async{
+    String share;
+    String dlLink;
+    List<SciHubArticleInfo> list =[];
+    var s = document.getElementById("link");
+    var shareObj;
+    var dlobj;
+    if(s==null){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+          duration: Duration(milliseconds: 1000),
+            content: Text("couldn't find anything :("),
+          backgroundColor: Colors.redAccent,
+          behavior: SnackBarBehavior.floating,
+        )
+      );
+    }
+    else{
+      shareObj=s.children[1].attributes['href'];
+      dlobj=document.getElementById("buttons").children[0].children[0].children[0].attributes['onclick'].replaceAll("?download=true", "").trim().replaceAll("location.href='//", "").replaceAll("'", "").trim();
+      list.add(SciHubArticleInfo(shareURL: shareObj,downloadURL: dlobj));
+      return list;
+    }
+    return list;
   }
 
 }
