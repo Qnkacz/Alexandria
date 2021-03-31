@@ -62,7 +62,7 @@ class _SciHubBodyState extends State<SciHubBody> {
                 ),
                 Expanded(
                     flex: 2,
-                    child: MaterialButton(onPressed: (){},child: Icon(Icons.search),))
+                    child: MaterialButton(onPressed: ()=>enterDOI(),child: Icon(Icons.search),))
               ],
             ),
           ],
