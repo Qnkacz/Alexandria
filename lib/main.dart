@@ -13,7 +13,7 @@ void main() async => {
           ),
       runApp(MaterialApp(
         themeMode: ThemeMode.system,
-        theme: MyThemes.lightTheme,
+        theme: MyThemes.darkTheme,
         darkTheme: MyThemes.darkTheme,
         home: DefaultTabController(
           length: 3,

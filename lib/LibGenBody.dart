@@ -20,9 +20,13 @@ class _LibGenBodyState extends State<LibGenBody> {
     });
     FocusScope.of(context).unfocus();
     String bookname = LibGen.LibGenTextController.text.trim();
+    GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookname");
     LibGen.lastSearch=bookname;
     API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
       LibGen.LibGenbookList=value;
+      if(value.length==0){
+        GlobalWidgets.showErrorFlushBar(context, "Sorry, we couldn't find $bookname");
+      }
     }));
   }
   searchPublisher(String name){
@@ -32,11 +36,14 @@ class _LibGenBodyState extends State<LibGenBody> {
     });
     FocusScope.of(context).unfocus();
     String bookname = name.trim();
+    GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookname");
     LibGen.lastSearch=bookname;
     print(bookname);
     API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
       LibGen.LibGenbookList=value;
-      print(LibGen.LibGenbookList.length);
+      if(value.length==0){
+        GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookname, :(");
+      }
     }));
   }
   @override

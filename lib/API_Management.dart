@@ -117,14 +117,7 @@ class API_Manager{
     var shareObj;
     var dlobj;
     if(s==null){
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-          duration: Duration(milliseconds: 1000),
-            content: Text("couldn't find anything :("),
-          backgroundColor: Colors.redAccent,
-          behavior: SnackBarBehavior.floating,
-        )
-      );
+      GlobalWidgets.showErrorFlushBar(context, "Sorry, we couldn't find your DOI :(");
     }
     else{
       shareObj=s.children[1].attributes['href'];

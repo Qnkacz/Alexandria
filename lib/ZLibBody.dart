@@ -52,14 +52,19 @@ class _zLibBodyState extends State<zLibBody> {
     setState(() {
       Utilities.PageNumber = 1;
       Utilities.bookList.clear();
+
     });
     FocusScope.of(context).unfocus();
     String bookName = Utilities.textEditingController.text;
+    GlobalWidgets.showMessageFlushBar(context, bookName);
     API_Manager.getSearchSite(bookName, 1)
         .then((value) => API_Manager.getBookList(value))
         .then(
           (value) => setState(() {
             Utilities.bookList = value;
+            if(Utilities.bookList.length==0){
+              GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookName, :(");
+            }
           }),
         )
         .then((value) => print(Utilities.bookList.length));
@@ -121,11 +126,12 @@ class _zLibBodyState extends State<zLibBody> {
                     return LittleBookCard(
                       bookInfo: Utilities.bookList[index],
                       publisher: () {
-                        //klikanie w wydawce
+                        ///klikanie w wydawce
                         String bookName;
                         setState(() {
                           Utilities.PageNumber=1;
                           bookName = Utilities.bookList[index].publisher;
+                          GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
                           Utilities.lastSearch = Utilities.search + bookName;
                           Utilities.lastSearch =
                               Utilities.lastSearch.replaceAll("+", " ");
@@ -136,14 +142,17 @@ class _zLibBodyState extends State<zLibBody> {
                             .then((value) => API_Manager.getBookList(value))
                             .then((value) => setState(() {
                                   Utilities.bookList = value;
+                                  if(value.length==0){
+                                    GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookName, :(");
+                                  }
                                 }));
-                      }, //klikanie po autorze
+                      }, ///klikanie po autorze
                       authorSearch: (String val) {
                         setState(() {
 
                           Utilities.PageNumber=1;
                           String siteUrl = Utilities.siteRoot +"/g/"+ val;
-                          print(siteUrl);
+                          GlobalWidgets.showMessageFlushBar(context, "Searching for: $val");
                           Utilities.lastSearch = siteUrl;
                           Utilities.bookList.clear();
                         });
@@ -151,6 +160,9 @@ class _zLibBodyState extends State<zLibBody> {
                             .then((value) => API_Manager.getBookList(value))
                             .then((value) => setState(() {
                                   Utilities.bookList = value;
+                                  if(value.length==0){
+                                    GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $val, :(");
+                                  }
                                 }));
                       },
                     );

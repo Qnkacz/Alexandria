@@ -1,4 +1,6 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:z_lib_app/Book.dart';
 
 class Names{
@@ -29,4 +31,21 @@ class LibGen{
   static List<LibGenBookInfo> LibGenbookList =[];
 
   static int PageNumber=1;
+}
+class GlobalWidgets{
+  static void showMessageFlushBar(BuildContext context,String text)=>Flushbar(
+    backgroundColor: Color(0xff8c6f71).withOpacity(0.6),
+    borderRadius: BorderRadius.circular(0),
+    barBlur: 20,
+    duration: Duration(seconds: 3),
+    message: "$text",
+    flushbarPosition: FlushbarPosition.TOP,
+  )..show(context);
+
+  static void showErrorFlushBar(BuildContext context, String msg)=>Flushbar(
+    backgroundColor: Colors.redAccent,
+    duration: Duration(seconds: 3),
+    message: msg,
+    flushbarPosition: FlushbarPosition.TOP,
+  )..show(context);
 }
