@@ -138,7 +138,6 @@ class API_Manager{
   static Future<dom.Document> getLibGenSearchSite(String bookName, int pageNumber) async {
     String site = LibGen.LibGenSearchStart+bookName+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
     print(site);
-    LibGen.lastSearch=site;
     http.Response response = await http.get(Uri.parse(site));
     dom.Document document = parser.parse(response.body);
     return document;

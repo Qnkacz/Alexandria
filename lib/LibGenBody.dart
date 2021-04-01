@@ -20,10 +20,9 @@ class _LibGenBodyState extends State<LibGenBody> {
     });
     FocusScope.of(context).unfocus();
     String bookname = LibGen.LibGenTextController.text.trim();
-    print(bookname);
+    LibGen.lastSearch=bookname;
     API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
       LibGen.LibGenbookList=value;
-      print(LibGen.LibGenbookList.length);
     }));
   }
   searchPublisher(String name){
@@ -33,6 +32,7 @@ class _LibGenBodyState extends State<LibGenBody> {
     });
     FocusScope.of(context).unfocus();
     String bookname = name.trim();
+    LibGen.lastSearch=bookname;
     print(bookname);
     API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
       LibGen.LibGenbookList=value;
@@ -73,7 +73,8 @@ class _LibGenBodyState extends State<LibGenBody> {
   }
   void enterBookNameWithpage(int index) {
     FocusScope.of(context).unfocus();
-    API_Manager.getLibGenSearchSite(LibGen.LibGenTextController.text,index)
+    print(LibGen.lastSearch);
+    API_Manager.getLibGenSearchSite(LibGen.lastSearch,index)
         .then((value) => API_Manager.getLibgenBookList(value))
         .then(
           (value) => setState(() {

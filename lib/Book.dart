@@ -305,7 +305,10 @@ class LibGenBookCard extends StatelessWidget {
           flex: 1,
           child: GestureDetector(
               onTap: () => {
-                //todo wiecej info
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowMoreInfo(book)))
               },
               child: Image.network(book.imageUrl,fit: BoxFit.fitWidth)),
         ),
