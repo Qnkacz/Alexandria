@@ -97,35 +97,6 @@ class API_Manager{
     dom.Document document = parser.parse(response.body);
     return document;
   }
-  ///parses the bookID site for normal human use
-  static Future<dynamic> getBookInfo(dom.Document document) async{
-    //gorne rzeczy
-    var cardBook = document.getElementsByClassName("row cardBooks").first;
-
-    var infoColumn = cardBook.getElementsByClassName("col-sm-9").first;
-    var imageURL =cardBook.getElementsByClassName("lightbox details-book-cover checkBookDownloaded").first.attributes['href'];
-    var title = infoColumn.getElementsByClassName("moderatorPanelToggler").first.text.trim();
-    List<String> authors =[];
-    infoColumn.getElementsByClassName("color1").forEach((element) {
-      authors.add(element.text.trim());
-    });
-    var desc = infoColumn.children[2].text.trim();
-
-    // detale obj
-    var detailBox = document.getElementsByClassName("bookDetailsBox").first;
-    var categories = detailBox.getElementsByClassName("bookProperty property_categories").first.children[1].text.trim();
-    var categoryLink = detailBox.getElementsByClassName("bookProperty property_categories").first.children[1].firstChild.attributes['href'];
-    var year = detailBox.getElementsByClassName("bookProperty property_year").first.children[1].text.trim();
-    
-    var language = detailBox.getElementsByClassName("bookProperty property_language").first.children[1].text.trim();
-    var pages = detailBox.getElementsByClassName("bookProperty property_pages").first.children[1].text.trim();
-    var file = detailBox.getElementsByClassName("bookProperty property__file").first.children[1].text.trim();
-    var fileURL = document.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'];
-
-    var bookInfo = new BigBookInfo(title: title,authors: authors,year: year,language: language,categories: categories,categoriesURL: categoryLink,pages: pages,imageUrl: imageURL,file: file,fileUrl: fileURL);
-    return bookInfo;
-  }
-
   static Future<void> LaunchInBrowser(String url) async {
     if (await canLaunch(url)) {
       await launch(
@@ -162,6 +133,37 @@ class API_Manager{
       return list;
     }
     return list;
+  }
+
+  static Future<dom.Document> getLibGenSearchSite(String bookName, int pageNumber) async {
+    String site = LibGen.LibGenSearchStart+bookName+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
+    print(site);
+    LibGen.lastSearch=site;
+    http.Response response = await http.get(Uri.parse(site));
+    dom.Document document = parser.parse(response.body);
+    return document;
+  }
+
+  static Future<dynamic> getLibgenBookList(dom.Document document)async{
+    List<LibGenBookInfo> bookInfoList = [];
+
+
+    List<dom.Element> allThings = document.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+    print(allThings.length);
+    List<dom.Element> bookObjs = [];
+    for(int i=0;i<allThings.length;i+=2){
+      bookObjs.add(allThings[i]);
+    }
+    print(bookObjs.length);
+    bookObjs.forEach((element) {
+      List<dom.Element> content = element.querySelectorAll('[valign="top"]');
+      content.removeAt(0);
+
+    });
+
+  }
+  static Future<dynamic> GetLibGenResult(dom.Document document,dynamic context) async{
+
   }
 
 }

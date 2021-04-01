@@ -11,12 +11,44 @@ class LibGenBody extends StatefulWidget {
 }
 
 class _LibGenBodyState extends State<LibGenBody> {
+  enterName(){
+    setState(() {
+      LibGen.PageNumber = 1;
+      LibGen.LibGenbookList.clear();
+    });
+    FocusScope.of(context).unfocus();
+    //String providerURL =LibGen.LibGenSearchStart+LibGen.LibGenTextController.text.trim()+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
+    String bookname = LibGen.LibGenTextController.text.trim();
+    print(bookname);
+    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value));
+    // API_Manager.getSite(providetURL).then((value) => API_Manager.GetSciHubResult(value,context)).then((value) =>
+    //     setState((){
+    //       Utilities.SciHubAritcleList=value;
+    //       print(Utilities.SciHubAritcleList.length);
+    //     })
+    // );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(child: ListView.builder(
           itemCount: LibGen.LibGenbookList.length,
           itemBuilder: (context,index){
+            if (LibGen.LibGenbookList.length == 0) {
+              return Container();
+            }
+            if (index == LibGen.LibGenbookList.length) {
+              if(LibGen.LibGenbookList.length>=100){
+                return LinearProgressIndicator(
+                  backgroundColor: Colors.grey[900],
+                  valueColor:
+                  new AlwaysStoppedAnimation<Color>(Colors.grey),
+                );
+              }
+              else{
+                return Container();
+              }
+            }
             final item = LibGen.LibGenbookList[index];
             return Text("cum");
           })),
@@ -32,9 +64,9 @@ class _LibGenBodyState extends State<LibGenBody> {
                     child: Container(
                         color: Color(0xff8c6f72),
                         child: TextField(
-                            onEditingComplete: ()=>{},//enterDOI(),
+                            onEditingComplete: ()=>enterName(),//enterDOI(),
                             textAlign: TextAlign.center,
-                            controller: Utilities.SciHubTextController,
+                            controller: LibGen.LibGenTextController,
                             cursorColor: Colors.white70,
                             style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                             decoration: InputDecoration(
@@ -46,7 +78,7 @@ class _LibGenBodyState extends State<LibGenBody> {
                 ),
                 Expanded(
                     flex: 2,
-                    child: MaterialButton(onPressed: ()=>{},child: Icon(Icons.search))),//enterDOI(),))
+                    child: MaterialButton(onPressed: ()=>enterName(),child: Icon(Icons.search))),//enterDOI(),))
               ],
             ),
           ],

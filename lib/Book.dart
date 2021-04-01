@@ -270,6 +270,17 @@ class SciHubArticle extends StatelessWidget {
   }
 }
 
-class LastGenBookInfo{
-
+class LibGenBookInfo{
+String title;
+String bookURL;
+String series;
+String seriesURL;
+String publisher;
+String year;
+String language;
+String ISBN;
+String size;
+String pages;
+String id;
+String extention;
 }

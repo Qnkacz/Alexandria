@@ -19,13 +19,14 @@ class Utilities{
   static int PageNumber=1;
 }
 class LibGen{
-  static String LibGenRootSite = "http://http://libgen.rs";
-  static String LibGenSearchStart = "http://http://libgen.rs/search.php?req=";
+  static TextEditingController LibGenTextController = new TextEditingController();
+  static String LibGenRootSite = "http://libgen.rs";
+  static String LibGenSearchStart = "http://libgen.rs/search.php?req=";
   static String LibGenSearchEnd = "&res=100&view=detailed";
   static String LibGenSearchPage = "&sortmode=ASC&page=";
   static String lastSearch;
 
-  static List<LastGenBookInfo> LibGenbookList =[];
+  static List<LibGenBookInfo> LibGenbookList =[];
 
   static int PageNumber=1;
 }
