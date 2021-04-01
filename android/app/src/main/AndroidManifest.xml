@@ -11,7 +11,7 @@
         </intent>
     </queries>
    <application
-        android:label="Z lib browser"
+        android:label="Alexandria"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
        <provider

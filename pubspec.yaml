@@ -58,6 +58,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/nopic.png
+    - assets/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -85,10 +86,10 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_native_splash:
-  color: "#22201f"
-  image: assets/glowa.png
+  color: "#273840"
+  image: assets/A_test.png
   android: true
 flutter_icons:
-  image_path: "assets/glowa.png"
+  image_path: "assets/A_test.png"
   android: true
   iso: true
