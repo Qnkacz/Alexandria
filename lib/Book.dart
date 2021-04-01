@@ -273,8 +273,8 @@ class SciHubArticle extends StatelessWidget {
 class LibGenBookInfo{
 String title;
 String bookURL;
+List<String> authors;
 String series;
-String seriesURL;
 String publisher;
 String year;
 String language;
@@ -283,4 +283,12 @@ String size;
 String pages;
 String id;
 String extention;
+LibGenBookInfo({this.title,this.bookURL,this.series,this.authors, this.publisher,this.year,this.language,this.ISBN,this.size,this.pages,this.extention});
+}
+
+class LibGenBookCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

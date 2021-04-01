@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:z_lib_app/API_Management.dart';
-import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
 
 class LibGenBody extends StatefulWidget {
@@ -20,7 +19,10 @@ class _LibGenBodyState extends State<LibGenBody> {
     //String providerURL =LibGen.LibGenSearchStart+LibGen.LibGenTextController.text.trim()+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
     String bookname = LibGen.LibGenTextController.text.trim();
     print(bookname);
-    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value));
+    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
+      LibGen.LibGenbookList=value;
+      print(LibGen.LibGenbookList.length);
+    }));
     // API_Manager.getSite(providetURL).then((value) => API_Manager.GetSciHubResult(value,context)).then((value) =>
     //     setState((){
     //       Utilities.SciHubAritcleList=value;

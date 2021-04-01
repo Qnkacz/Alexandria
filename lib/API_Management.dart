@@ -144,7 +144,7 @@ class API_Manager{
     return document;
   }
 
-  static Future<dynamic> getLibgenBookList(dom.Document document)async{
+  static Future<List<LibGenBookInfo>> getLibgenBookList(dom.Document document)async{
     List<LibGenBookInfo> bookInfoList = [];
 
 
@@ -158,9 +158,73 @@ class API_Manager{
     bookObjs.forEach((element) {
       List<dom.Element> content = element.querySelectorAll('[valign="top"]');
       content.removeAt(0);
+      ///cover url
+      String coverUrl =content[0].children[0].children[0].children[0].attributes['src'];
+      if(coverUrl.contains("static")){
+        coverUrl= coverUrl.replaceAll("/covers/", "").trim();
+      }
+      else{
+        coverUrl = LibGen.LibGenRootSite+coverUrl;
+      }
 
+      /// title
+      String title = content[0].children[2].children[0].children[0].text.trim();
+
+      ///authors
+      List<String> authors =[];
+      content[1].children[1].children[0].children.forEach((element) {
+       authors.add( element.text.trim());
+      });
+
+      ///series
+      String series = content[2].children[1].text.trim();
+      if(series==""){
+        series="not given";
+      }
+
+      ///publisher
+      String publisher = content[3].children[1].text.trim();
+      if(publisher.isEmpty){
+        publisher = "not given";
+      }
+      ///year
+      String year = content[4].children[1].text.trim();
+      if(year.isEmpty){
+        year="not given";
+      }
+      ///language
+      String language = content[5].children[1].text.trim();
+      if(language.isEmpty){
+        language="not given";
+      }
+      ///pages
+      String pages = content[5].children[3].text.trim();
+      if(pages.isEmpty){
+        pages="not given";
+      }
+      ///ISBN
+      String ISBN = content[6].children[1].text.trim();
+      if(ISBN.isEmpty){
+        ISBN="not given";
+      }
+      ///size
+      String size = content[8].children[1].text.trim();
+      if(size.isEmpty){
+        size="not given";
+      }
+      ///extension
+      String extension = content[8].children[3].text.trim();
+      if(extension.isEmpty){
+        extension="not given";
+      }
+      ///bookurl
+      String url =LibGen.LibGenRootSite+content[0].children[2].children[0].children[0].attributes['href'].replaceFirst("..", "").trim();
+      LibGenBookInfo book = new LibGenBookInfo(title: title,bookURL: url,series: series,authors: authors,publisher: publisher,year: year,language: language,ISBN: ISBN,size: size,pages: pages,extention: extension);
+
+      bookInfoList.add(book);
     });
 
+    return bookInfoList;
   }
   static Future<dynamic> GetLibGenResult(dom.Document document,dynamic context) async{
 
