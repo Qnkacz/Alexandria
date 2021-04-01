@@ -71,14 +71,24 @@ class _LibGenBodyState extends State<LibGenBody> {
     scrollController = new ScrollController()..addListener(_loadMore);
     super.initState();
   }
+  void enterBookNameWithpage(int index) {
+    FocusScope.of(context).unfocus();
+    API_Manager.getLibGenSearchSite(LibGen.LibGenTextController.text,index)
+        .then((value) => API_Manager.getLibgenBookList(value))
+        .then(
+          (value) => setState(() {
+        LibGen.LibGenbookList.addAll(value);
+      }),
+    )
+        .then((value) => print(Utilities.bookList.length));
+  }
   void _loadMore() {
     //todo: review and do
-    // if (scrollController.position.pixels ==
-    //     scrollController.position.maxScrollExtent) {
-    //   Utilities.PageNumber++;
-    //   print(Utilities.PageNumber);
-    //   enterBookNameWithpage(Utilities.PageNumber);
-    // }
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+        LibGen.PageNumber++;
+         enterBookNameWithpage(LibGen.PageNumber);
+    }
   }
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -89,6 +99,7 @@ class _LibGenBodyState extends State<LibGenBody> {
       child: Scaffold(
         body: SafeArea(child: ListView.builder(
             itemCount: LibGen.LibGenbookList.length,
+            controller: scrollController,
             itemBuilder: (context,index){
               if (LibGen.LibGenbookList.length == 0) {
                 return Container();
@@ -105,6 +116,7 @@ class _LibGenBodyState extends State<LibGenBody> {
                   return Container();
                 }
               }
+
               final item = LibGen.LibGenbookList[index];
               return LibGenBookCard(
                 book: LibGen.LibGenbookList[index],
