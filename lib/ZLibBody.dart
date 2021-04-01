@@ -129,7 +129,7 @@ class _zLibBodyState extends State<zLibBody> {
                           Utilities.lastSearch = Utilities.search + bookName;
                           Utilities.lastSearch =
                               Utilities.lastSearch.replaceAll("+", " ");
-                          //print(Utilities.lastSearch);
+                          print(Utilities.lastSearch);
                           Utilities.bookList.clear();
                         });
                         API_Manager.goToSearchSite(1)
@@ -142,7 +142,8 @@ class _zLibBodyState extends State<zLibBody> {
                         setState(() {
 
                           Utilities.PageNumber=1;
-                          String siteUrl = Utilities.siteRoot + val;
+                          String siteUrl = Utilities.siteRoot +"/g/"+ val;
+                          print(siteUrl);
                           Utilities.lastSearch = siteUrl;
                           Utilities.bookList.clear();
                         });
