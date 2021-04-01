@@ -270,3 +270,6 @@ class SciHubArticle extends StatelessWidget {
   }
 }
 
+class LastGenBookInfo{
+
+}

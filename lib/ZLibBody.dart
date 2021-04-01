@@ -174,7 +174,7 @@ class _zLibBodyState extends State<zLibBody> {
                               cursorColor: Colors.white70,
                               style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                               decoration: InputDecoration(
-                                hintText: "Book name goes here!",
+                                hintText: "Searched phrase goes here",
                                 hintStyle: TextStyle(color: Colors.white70),
                                 border: InputBorder.none,
                               ),
