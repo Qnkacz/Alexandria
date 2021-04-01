@@ -220,7 +220,7 @@ class LittleBookAuthors extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: GestureDetector(
-        onTap: () => search(authorURL),
+        onTap: () => search(author),
         child: Container(margin: EdgeInsets.all(3), child: Text(author,style: TextStyle(color: Colors.white60),)),
       ),
     );
@@ -273,6 +273,7 @@ class SciHubArticle extends StatelessWidget {
 class LibGenBookInfo{
 String title;
 String bookURL;
+String imageUrl;
 List<String> authors;
 String series;
 String publisher;
@@ -283,12 +284,151 @@ String size;
 String pages;
 String id;
 String extention;
-LibGenBookInfo({this.title,this.bookURL,this.series,this.authors, this.publisher,this.year,this.language,this.ISBN,this.size,this.pages,this.extention});
+LibGenBookInfo({this.title,this.imageUrl, this.bookURL,this.series,this.authors, this.publisher,this.year,this.language,this.ISBN,this.size,this.pages,this.extention});
 }
 
 class LibGenBookCard extends StatelessWidget {
+  LibGenBookInfo book;
+  Function(String) publisherSearch;
+  LibGenBookCard({this.book,this.publisherSearch});
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    bool visiblepublisher = true;
+    if (book.publisher == "not given") {
+      visiblepublisher = false;
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: GestureDetector(
+              onTap: () => {
+                //todo wiecej info
+              },
+              child: Image.network(book.imageUrl,fit: BoxFit.fitWidth)),
+        ),
+        Expanded(
+          flex: 3,
+          child: Slidable(
+            actionPane: SlidableStrechActionPane(),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: IconSlideAction(
+                    color: Color(0xff6a8999),
+                    icon: Icons.share,
+                    onTap: () {
+                      Share.share(book.bookURL);
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: IconSlideAction(
+                  color: Color(0xff6a8999),
+                  icon: Icons.download_rounded,
+                  onTap: () async{
+                    ///proper way of downloading
+                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                    //     .then((value) => {
+                    //           dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                    //           print(dlLink),
+                    //         }).then((value) async{
+                    //   final status = await Permission.storage.request();
+                    //   if(status.isGranted){
+                    //
+                    //     final externalDir = await getExternalStorageDirectory();
+                    //
+                    //     final id = await FlutterDownloader.enqueue(url: dlLink, savedDir: externalDir.path,fileName: bookInfo.title,showNotification: true,openFileFromNotification: true);
+                    //
+                    //   }else{
+                    //
+                    //   }
+                    // });
+                    /// just open it in a fucking browser bro
+                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                    //     .then((value) => {
+                    //   dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                    //   print(dlLink),
+                    // }).then((value) => API_Manager.LaunchInBrowser(dlLink));
+
+                    ///just open the fucking website at least
+                    //API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
+                    API_Manager.getSite(book.bookURL).then((value)async{
+                      var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                      print(Row[3].children[0].children[0].children[0].children[0].attributes['href']);
+                      String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                        final status = await Permission.storage.request();
+                        if(status.isGranted){
+
+                          final externalDir = await getExternalStorageDirectory();
+
+                          final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
+
+                        }else{
+
+                        }
+                    });
+                  },
+                ),
+              ),
+            ],
+            child: Card(
+              color: Color(0xff4f6773),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(book.title,style: TextStyle(color: Colors.white60),),
+                  ),
+                  Visibility(
+                    visible: visiblepublisher,
+                    child: GestureDetector(
+                      onTap: ()=>publisherSearch(book.publisher),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        child: Container(
+                          child: Text(book.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: book.authors.length,
+                        itemBuilder: (context, index) {
+                          return LittleBookAuthors(book.authors[index],"cum",publisherSearch);
+                        }),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Year: " + book.year,
+                        overflow: TextOverflow.fade,
+                        style: TextStyle(fontSize: 10,color: Colors.white60),
+                      ),
+                      Text(
+                        "Language: " + book.language,
+                        overflow: TextOverflow.fade,
+                        style: TextStyle(fontSize: 10,color: Colors.white60),
+                      ),
+                      Text(
+                        "FIle: " + book.extention+" "+book.size.substring(0,5),
+                        overflow: TextOverflow.fade,
+                        style: TextStyle(fontSize: 10,color: Colors.white60),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

@@ -219,7 +219,7 @@ class API_Manager{
       }
       ///bookurl
       String url =LibGen.LibGenRootSite+content[0].children[2].children[0].children[0].attributes['href'].replaceFirst("..", "").trim();
-      LibGenBookInfo book = new LibGenBookInfo(title: title,bookURL: url,series: series,authors: authors,publisher: publisher,year: year,language: language,ISBN: ISBN,size: size,pages: pages,extention: extension);
+      LibGenBookInfo book = new LibGenBookInfo(imageUrl: coverUrl, title: title,bookURL: url,series: series,authors: authors,publisher: publisher,year: year,language: language,ISBN: ISBN,size: size,pages: pages,extention: extension);
 
       bookInfoList.add(book);
     });

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:z_lib_app/API_Management.dart';
+import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
 
 class LibGenBody extends StatefulWidget {
@@ -16,19 +17,25 @@ class _LibGenBodyState extends State<LibGenBody> {
       LibGen.LibGenbookList.clear();
     });
     FocusScope.of(context).unfocus();
-    //String providerURL =LibGen.LibGenSearchStart+LibGen.LibGenTextController.text.trim()+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
     String bookname = LibGen.LibGenTextController.text.trim();
     print(bookname);
     API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
       LibGen.LibGenbookList=value;
       print(LibGen.LibGenbookList.length);
     }));
-    // API_Manager.getSite(providetURL).then((value) => API_Manager.GetSciHubResult(value,context)).then((value) =>
-    //     setState((){
-    //       Utilities.SciHubAritcleList=value;
-    //       print(Utilities.SciHubAritcleList.length);
-    //     })
-    // );
+  }
+  searchPublisher(String name){
+    setState(() {
+      LibGen.PageNumber = 1;
+      LibGen.LibGenbookList.clear();
+    });
+    FocusScope.of(context).unfocus();
+    String bookname = name.trim();
+    print(bookname);
+    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
+      LibGen.LibGenbookList=value;
+      print(LibGen.LibGenbookList.length);
+    }));
   }
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,10 @@ class _LibGenBodyState extends State<LibGenBody> {
               }
             }
             final item = LibGen.LibGenbookList[index];
-            return Text("cum");
+            return LibGenBookCard(
+              book: LibGen.LibGenbookList[index],
+              publisherSearch: (String val)=>searchPublisher(val),
+            );
           })),
       bottomSheet: Container(
         color: Color(0xffd9b7ab),
