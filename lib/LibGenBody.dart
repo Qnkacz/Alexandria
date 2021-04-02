@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
@@ -106,6 +107,10 @@ class _LibGenBodyState extends State<LibGenBody> {
           children: [
             Row(
               children: [
+                IconButton(
+                  onPressed: ()=> Scaffold.of(context).openDrawer(),
+                  icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
+                ),
                 Expanded(
                     flex: 8,
                     child: Container(

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
@@ -56,7 +57,7 @@ class _zLibBodyState extends State<zLibBody> {
     });
     FocusScope.of(context).unfocus();
     String bookName = Utilities.textEditingController.text;
-    GlobalWidgets.showMessageFlushBar(context, bookName);
+    GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
     API_Manager.getSearchSite(bookName, 1)
         .then((value) => API_Manager.getBookList(value))
         .then(
@@ -172,6 +173,10 @@ class _zLibBodyState extends State<zLibBody> {
               children: [
                 Row(
                   children: [
+                    IconButton(
+                      onPressed: ()=> Scaffold.of(context).openDrawer(),
+                      icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
+                    ),
                     Expanded(
                         flex: 8,
                         child: Container(

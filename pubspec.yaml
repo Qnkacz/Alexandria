@@ -59,6 +59,8 @@ flutter:
   assets:
     - assets/nopic.png
     - assets/icon.png
+    - assets/A_test.png
+    - assets/glowa.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

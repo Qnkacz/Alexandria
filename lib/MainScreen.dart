@@ -52,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
         length: 3,
         child: Scaffold(
           drawer: Drawer(
+            elevation: 0,
               child: Options()
           ),
           bottomSheet: Container(
@@ -59,7 +60,9 @@ class _MainScreenState extends State<MainScreen> {
             child: TabBar(
               indicatorColor: Color(0xFFD9B7AB),
               tabs: [
-                Text("Z-lib", style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
+                Container(
+                  height: 40,
+                    child: Center(child: Text("Z-lib", style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),))),
                 Text("Sci-hub",style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
                 Text("LibGen",style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
               ],
@@ -68,15 +71,15 @@ class _MainScreenState extends State<MainScreen> {
           body: TabBarView(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,20),
+                padding: const EdgeInsets.fromLTRB(0,0,0,42),
                 child: zLibBody(),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,20),
+                padding: const EdgeInsets.fromLTRB(0,0,0,42),
                 child: SciHubBody(),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,20),
+                padding: const EdgeInsets.fromLTRB(0,0,0,42),
                 child: LibGenBody(),
               ),
             ],

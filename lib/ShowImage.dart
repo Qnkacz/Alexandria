@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:share/share.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
+import 'package:z_lib_app/ClassNames.dart';
 
 class ShowImage extends StatelessWidget {
   String url;
@@ -87,12 +88,7 @@ class MoreInfoClickableInfo extends StatelessWidget {
     return Center(child: GestureDetector(
       onTap: (){
         Clipboard.setData(new ClipboardData(text: s));
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.blueGrey,
-            duration: Duration(seconds: 1),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),
-            ),
-            content: Text("Copied $s to cliboard")));
+        GlobalWidgets.showMessageFlushBar(context, "Copied $s to cliboard");
       },
       child: Card(
           color: Colors.blueGrey[700],

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
@@ -46,22 +47,8 @@ class _SciHubBodyState extends State<SciHubBody> {
             Row(
               children: [
                 IconButton(
-                  onPressed: (){
-                    return showDialog(
-                      context: context,
-                      builder: (context)=>BackdropFilter(filter: ImageFilter.blur(sigmaX: 3,sigmaY: 3),child: AlertDialog(
-                        backgroundColor: Colors.blueGrey,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: Color(0xffD9B7AB))),
-                        title: Text("Instructions"),
-                        content: Text("To use this site, you have to copy the URL, PMID or DOI link for the article you want to receive from Sci-Hub"),
-                      actions: [
-                        MaterialButton(onPressed: ()=>Navigator.of(context).pop(false),child: Text("OK",style: TextStyle(fontWeight: FontWeight.bold,color:Color(0xffD9B7AB),fontSize: 15))),
-                        MaterialButton(onPressed: (){Navigator.of(context).pop(false);API_Manager.LaunchInBrowser("https://en.wikipedia.org/wiki/Digital_object_identifier");},child: Text("About DOI",style: TextStyle(fontWeight: FontWeight.bold,color:Color(0xffD9B7AB),fontSize: 15))),
-                      ],
-                      ),)
-                    );
-                  },
-                  icon: Icon(Icons.info_outline,),
+                  onPressed: ()=> Scaffold.of(context).openDrawer(),
+                  icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
                 ),
                 Expanded(
                     flex: 8,

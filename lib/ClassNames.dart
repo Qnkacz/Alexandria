@@ -31,6 +31,38 @@ class LibGen{
   static List<LibGenBookInfo> LibGenbookList =[];
 
   static int PageNumber=1;
+
+  static List options=[
+    "title",
+    "author",
+    "series",
+    "publisher",
+    "year",
+    "isbn",
+    "language",
+    "md5",
+    "tags",
+    "extension"
+  ];
+}
+class zLibrary{
+  static List languages =[
+    "all",
+    "english",
+    "polish",
+    "german",
+    "russian"
+  ];
+  static List extensions=[
+    "all",
+    "pdf",
+    "mobi",
+    "epub",
+    "rtf",
+    "doc",
+    "txt",
+    "rar",
+  ];
 }
 class GlobalWidgets{
   static void showMessageFlushBar(BuildContext context,String text)=>Flushbar(
