@@ -358,20 +358,38 @@ class LibGenBookCard extends StatelessWidget {
 
                     ///just open the fucking website at least
                     //API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
+                    // API_Manager.getSite(book.bookURL).then((value)async{
+                    //   var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                    //   print(Row[3].children[0].children[0].children[0].children[0].attributes['href']);
+                    //   String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                    //     final status = await Permission.storage.request();
+                    //     if(status.isGranted){
+                    //
+                    //       final externalDir = await getExternalStorageDirectory();
+                    //
+                    //       final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
+                    //
+                    //     }else{
+                    //
+                    //     }
+                    // });
                     API_Manager.getSite(book.bookURL).then((value)async{
                       var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
-                      print(Row[3].children[0].children[0].children[0].children[0].attributes['href']);
                       String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
-                        final status = await Permission.storage.request();
-                        if(status.isGranted){
+                      API_Manager.getSite(downloadUrl).then((value)async{
+                        String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
+                        print(downloadUrl);
+                            final status = await Permission.storage.request();
+                            if(status.isGranted){
 
-                          final externalDir = await getExternalStorageDirectory();
+                              final externalDir = await getExternalStorageDirectory();
 
-                          final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
+                              final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
 
-                        }else{
+                            }else{
 
-                        }
+                            }
+                      });
                     });
                   },
                 ),

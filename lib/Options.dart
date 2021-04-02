@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/ClassNames.dart';
 
@@ -16,6 +17,8 @@ class _OptionsState extends State<Options> {
   String zlibYearTo;
 
   String libGenOption;
+
+  String appLanguage;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +28,8 @@ class _OptionsState extends State<Options> {
           data: ThemeData(
               dividerColor: Colors.transparent,
               accentColor: Color(0xffD9B7AB),
-              cardColor: Color(0xffD9B7AB)),
+              cardColor: Color(0xffD9B7AB),
+          ),
           child: Column(
             children: [
               ///header
@@ -34,18 +38,26 @@ class _OptionsState extends State<Options> {
                 color: Color(0xffE8E8E8),
                 child: Row(
                   children: [
-                    Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage('assets/A_test.png'),
-                                fit: BoxFit.fill))),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                      child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/A_test.png'),
+                                  fit: BoxFit.fill))),
+                    ),
                     Spacer(),
-                    Text(
-                      "Alexandria",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 13, 0),
+                      child: Text(
+                        "Alexandria",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.sofia(
+                          textStyle: TextStyle(fontSize: 30)
+                        ),
+                      ),
                     )
                   ],
                 ),
@@ -73,7 +85,9 @@ class _OptionsState extends State<Options> {
                             children: [
                               Text("Created by:"),
                               Divider(),
-                              Text("Bartosz Wąsik")
+                              Text("Bartosz Wąsik",style: GoogleFonts.inconsolata(
+                                textStyle: TextStyle(fontWeight: FontWeight.bold)
+                              ),)
                             ],
                           ),
                         ),
@@ -239,6 +253,32 @@ class _OptionsState extends State<Options> {
                 ),
                 trailing: FaIcon(FontAwesomeIcons.cog),
                 children: [
+                  ///app language
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25,0,25,0),
+                    child: Row(
+                      children: [
+                        Text("App language"),
+                        Spacer(),
+                        DropdownButton(
+                            dropdownColor: Color(0xffD9B7AB),
+                            icon: Icon(Icons.language,color: Colors.black54,),
+                            hint: Text("option"),
+                            value: appLanguage,
+                            onChanged: (value) {
+                              setState(() {
+                                appLanguage = value;
+                              });
+                            },
+                            items: Utilities.appLanguages.map((e) {
+                              return DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              );
+                            }).toList())
+                      ],
+                    ),
+                  ),
                   /// Z liblary options
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10,0,10,0),
@@ -343,11 +383,12 @@ class _OptionsState extends State<Options> {
                       ],
                     ),
                   ),
+                  ///LibGen options
                   Padding(
                     padding: const EdgeInsets.fromLTRB(25,0,25,0),
                     child: Row(
                       children: [
-                        Text("Language: "),
+                        Text("LibGen search for: ",style: TextStyle(fontWeight: FontWeight.bold),),
                         Spacer(),
                         DropdownButton(
                             dropdownColor: Color(0xffD9B7AB),

@@ -19,6 +19,13 @@ class Utilities{
   static List<SciHubArticleInfo> SciHubAritcleList=[];
   static String lastSearch;
   static int PageNumber=1;
+
+  static List appLanguages =[
+    "Eng",
+    "Pol",
+    "Ger",
+    "Rus",
+  ];
 }
 class LibGen{
   static TextEditingController LibGenTextController = new TextEditingController();
