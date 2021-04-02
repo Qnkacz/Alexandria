@@ -11,6 +11,34 @@ class Options extends StatefulWidget {
 }
 
 class _OptionsState extends State<Options> {
+  void zLibRemoveLanguage(String language){
+    setState(() {
+      Utilities.bookList.removeWhere((element) => (element.leanguage!=language));
+    });
+    GlobalWidgets.showMessageFlushBar(context, "Removed listed books that didn't match the language");
+  }
+  void zLibRemoveExtensiion(String extension){
+    setState(() {
+      Utilities.bookList.removeWhere((element) => (!element.file.contains(extension.toUpperCase())));
+    });
+    GlobalWidgets.showMessageFlushBar(context, "Removed listed books that didn't match the extension");
+  }
+  void zLibRemoveBookBelowYear(String year){
+    setState(() {
+      Utilities.bookList.removeWhere((element) => int.parse(element.year) <int.parse(year));
+    });
+    GlobalWidgets.showMessageFlushBar(context, "Removed listed books that where older than $year");
+  }
+  void zLibRemoveBookAboveYear(String year){
+    setState(() {
+      Utilities.bookList.removeWhere((element) => int.parse(element.year) >int.parse(year));
+    });
+    GlobalWidgets.showMessageFlushBar(context, "Removed listed books that where younger than $year");
+  }
+
+  void LibGenRemoveBooks(){
+
+  }
   String zLibchosenLanguage;
   String zLibchosenExt;
   String zlibYearFrom;
@@ -263,7 +291,7 @@ class _OptionsState extends State<Options> {
                         DropdownButton(
                             dropdownColor: Color(0xffD9B7AB),
                             icon: Icon(Icons.language,color: Colors.black54,),
-                            hint: Text("option"),
+                            hint: Text("language"),
                             value: appLanguage,
                             onChanged: (value) {
                               setState(() {
@@ -298,6 +326,7 @@ class _OptionsState extends State<Options> {
                                   onChanged: (value) {
                                     setState(() {
                                       zLibchosenLanguage = value;
+                                      zLibRemoveLanguage(zLibchosenLanguage);
                                     });
                                   },
                                   items: zLibrary.languages.map((e) {
@@ -323,6 +352,7 @@ class _OptionsState extends State<Options> {
                                   onChanged: (value) {
                                     setState(() {
                                       zLibchosenExt = value;
+                                      zLibRemoveExtensiion(zLibchosenExt);
                                     });
                                   },
                                   items: zLibrary.extensions.map((e) {

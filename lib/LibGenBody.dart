@@ -108,7 +108,10 @@ class _LibGenBodyState extends State<LibGenBody> {
             Row(
               children: [
                 IconButton(
-                  onPressed: ()=> Scaffold.of(context).openDrawer(),
+                  onPressed: (){
+                    FocusScope.of(context).unfocus();
+                    Scaffold.of(context).openDrawer();
+                  },
                   icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
                 ),
                 Expanded(
