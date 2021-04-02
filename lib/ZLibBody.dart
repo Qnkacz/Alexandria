@@ -92,119 +92,114 @@ class _zLibBodyState extends State<zLibBody> {
   }
 
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: (){
-        exitDialoge();
-        return Future.value(false);
-      },
-      child: Scaffold(
+    return Scaffold(
 
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-              child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: Utilities.bookList.length + 1,
-                  itemBuilder: (context, index) {
-                    if (Utilities.bookList.length == 0) {
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+            child: ListView.builder(
+                controller: scrollController,
+                itemCount: Utilities.bookList.length + 1,
+                itemBuilder: (context, index) {
+                  if (Utilities.bookList.length == 0) {
+                    return Container();
+                  }
+                  if (index == Utilities.bookList.length) {
+                    if(Utilities.bookList.length>=50){
+                      return LinearProgressIndicator(
+                        backgroundColor: Colors.grey[900],
+                        valueColor:
+                        new AlwaysStoppedAnimation<Color>(Colors.grey),
+                      );
+                    }
+                    else{
                       return Container();
                     }
-                    if (index == Utilities.bookList.length) {
-                      if(Utilities.bookList.length>=50){
-                        return LinearProgressIndicator(
-                          backgroundColor: Colors.grey[900],
-                          valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.grey),
-                        );
-                      }
-                      else{
-                        return Container();
-                      }
-                    }
+                  }
 
-                    final item = Utilities.bookList[index];
-                    return LittleBookCard(
-                      bookInfo: Utilities.bookList[index],
-                      publisher: () {
-                        ///klikanie w wydawce
-                        String bookName;
-                        setState(() {
-                          Utilities.PageNumber=1;
-                          bookName = Utilities.bookList[index].publisher;
-                          GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
-                          Utilities.lastSearch = Utilities.search + bookName;
-                          Utilities.lastSearch =
-                              Utilities.lastSearch.replaceAll("+", " ");
-                          print(Utilities.lastSearch);
-                          Utilities.bookList.clear();
-                        });
-                        API_Manager.goToSearchSite(1)
-                            .then((value) => API_Manager.getBookList(value))
-                            .then((value) => setState(() {
-                                  Utilities.bookList = value;
-                                  if(value.length==0){
-                                    GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookName, :(");
-                                  }
-                                }));
-                      }, ///klikanie po autorze
-                      authorSearch: (String val) {
-                        setState(() {
-
-                          Utilities.PageNumber=1;
-                          String siteUrl = Utilities.siteRoot +"/g/"+ val;
-                          GlobalWidgets.showMessageFlushBar(context, "Searching for: $val");
-                          Utilities.lastSearch = siteUrl;
-                          Utilities.bookList.clear();
-                        });
-                        API_Manager.goToSearchSite(1)
-                            .then((value) => API_Manager.getBookList(value))
-                            .then((value) => setState(() {
-                                  Utilities.bookList = value;
-                                  if(value.length==0){
-                                    GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $val, :(");
-                                  }
-                                }));
-                      },
-                    );
-                  }),
-            ),
+                  final item = Utilities.bookList[index];
+                  return LittleBookCard(
+                    bookInfo: Utilities.bookList[index],
+                    publisher: () {
+                      ///klikanie w wydawce
+                      String bookName;
+                      setState(() {
+                        FocusScope.of(context).unfocus();
+                        Utilities.PageNumber=1;
+                        bookName = Utilities.bookList[index].publisher;
+                        GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
+                        Utilities.lastSearch = Utilities.search + bookName;
+                        Utilities.lastSearch =
+                            Utilities.lastSearch.replaceAll("+", " ");
+                        print(Utilities.lastSearch);
+                        Utilities.bookList.clear();
+                      });
+                      API_Manager.goToSearchSite(1)
+                          .then((value) => API_Manager.getBookList(value))
+                          .then((value) => setState(() {
+                                Utilities.bookList = value;
+                                if(value.length==0){
+                                  GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookName, :(");
+                                }
+                              }));
+                    }, ///klikanie po autorze
+                    authorSearch: (String val) {
+                      setState(() {
+                        FocusScope.of(context).unfocus();
+                        Utilities.PageNumber=1;
+                        String siteUrl = Utilities.siteRoot +"/g/"+ val;
+                        GlobalWidgets.showMessageFlushBar(context, "Searching for: $val");
+                        Utilities.lastSearch = siteUrl;
+                        Utilities.bookList.clear();
+                      });
+                      API_Manager.goToSearchSite(1)
+                          .then((value) => API_Manager.getBookList(value))
+                          .then((value) => setState(() {
+                                Utilities.bookList = value;
+                                if(value.length==0){
+                                  GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $val, :(");
+                                }
+                              }));
+                    },
+                  );
+                }),
           ),
-          bottomSheet: Container(
-              color: Color(0xffd9b7ab),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          flex: 8,
-                          child: Container(
-                            color: Color(0xff8c6f72),
-                            child: TextField(
-                              onEditingComplete: () => enterBookName(), //text
-                              textAlign: TextAlign.center,
-                              controller: Utilities.textEditingController,
-                              cursorColor: Colors.white70,
-                              style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
-                              decoration: InputDecoration(
-                                hintText: "Searched phrase goes here",
-                                hintStyle: TextStyle(color: Colors.white70),
-                                border: InputBorder.none,
-                              ),
+        ),
+        bottomSheet: Container(
+            color: Color(0xffd9b7ab),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        flex: 8,
+                        child: Container(
+                          color: Color(0xff8c6f72),
+                          child: TextField(
+                            onEditingComplete: () => enterBookName(), //text
+                            textAlign: TextAlign.center,
+                            controller: Utilities.textEditingController,
+                            cursorColor: Colors.white70,
+                            style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+                            decoration: InputDecoration(
+                              hintText: "Searched phrase goes here",
+                              hintStyle: TextStyle(color: Colors.white70),
+                              border: InputBorder.none,
                             ),
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: MaterialButton(
-                              onPressed: ()=>enterBookName(),
-                              child: Icon(
-                                Icons.search,
-                                color: Color(0xff263740)
-                              )))
-                    ],
-                  )
-                ],
-              ))),
-    );
+                          ),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: MaterialButton(
+                            onPressed: ()=>enterBookName(),
+                            child: Icon(
+                              Icons.search,
+                              color: Color(0xff263740)
+                            )))
+                  ],
+                )
+              ],
+            )));
   }
 }
