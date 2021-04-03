@@ -5,6 +5,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
+import 'package:z_lib_app/Options.dart';
 class API_Manager{
   static Future<dom.Document> getSite(String website) async
   {
@@ -16,12 +17,86 @@ class API_Manager{
   static Future<dom.Document> getSearchSite(String bookName, int pageNumber) async {
     String site = Utilities.search+bookName;
     Utilities.lastSearch=site;
+    if(SavedOptions.zlibYearFrom!="year"){
+      site=site+"/?yearFrom="+SavedOptions.zlibYearFrom;
+    }
+    if(SavedOptions.zlibYearTo!="year"){
+      if(!site.contains("?"))
+      {
+        site=site+"/?yearTo="+SavedOptions.zlibYearFrom;
+      }
+      else{
+        site=site+"&yearTo="+SavedOptions.zlibYearTo;
+      }
+    }
+    if(SavedOptions.zLibchosenLanguage!=null){
+
+      if(!site.contains("?"))
+      {
+        site=site+"/?language="+SavedOptions.zLibchosenLanguage;
+      }
+      else{
+        site=site+"&language="+SavedOptions.zLibchosenLanguage;
+      }
+    }
+    if(SavedOptions.zLibchosenExt!=null){
+      if(SavedOptions.zLibchosenExt!="all"){
+        if(!site.contains("?"))
+        {
+          site=site+"/?extension="+SavedOptions.zLibchosenExt;
+        }
+        else{
+          site=site+"&extension="+SavedOptions.zLibchosenExt;
+        }
+      }
+    }
+
+
+    print(site);
     http.Response response = await http.get(Uri.parse(site));
     dom.Document document = parser.parse(response.body);
     return document;
   }
   static Future<dom.Document> goToSearchSite(int pageNumber) async {
-    String site = Utilities.lastSearch+"?page=$pageNumber";
+    String site = Utilities.lastSearch;
+    if(SavedOptions.zlibYearFrom!="year"){
+      site=site+"/?yearFrom="+SavedOptions.zlibYearFrom;
+    }
+    if(SavedOptions.zlibYearTo!="year"){
+      if(!site.contains("?"))
+      {
+        site=site+"/?yearTo="+SavedOptions.zlibYearFrom;
+      }
+      else{
+        site=site+"&yearTo="+SavedOptions.zlibYearTo;
+      }
+    }
+    if(SavedOptions.zLibchosenLanguage!=null){
+
+      if(!site.contains("?"))
+      {
+        site=site+"/?language="+SavedOptions.zLibchosenLanguage;
+      }
+      else{
+        site=site+"&language="+SavedOptions.zLibchosenLanguage;
+      }
+    }
+    if(SavedOptions.zLibchosenExt!=null || SavedOptions.zLibchosenExt!="all"){
+      if(!site.contains("?"))
+      {
+        site=site+"/?extension="+SavedOptions.zLibchosenExt;
+      }
+      else{
+        site=site+"&extension="+SavedOptions.zLibchosenExt;
+      }
+    }
+    if(!site.contains("?")){
+      site = site+"?page=$pageNumber";
+    }
+    else{
+      site = site+"&page=$pageNumber";
+    }
+    print(site);
     http.Response response = await http.get(Uri.parse(site));
     dom.Document document = parser.parse(response.body);
     return document;

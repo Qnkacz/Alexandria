@@ -58,21 +58,25 @@ class _SciHubBodyState extends State<SciHubBody> {
                     child: Container(
                     color: Color(0xff8c6f72),
                     child: TextField(
-                      onEditingComplete: ()=>enterDOI(),
+                      onEditingComplete: () {
+                        if(Utilities.SciHubTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+                        else enterDOI();
+                      },
                         textAlign: TextAlign.center,
                         controller: Utilities.SciHubTextController,
                         cursorColor: Colors.white70,
                         style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
-                          hintText: "enter URL, PMID / DOI",
-                          hintStyle: TextStyle(color: Colors.white70,fontStyle: FontStyle.italic),
-                          border: InputBorder.none,
+                        hintText: "enter URL, PMID / DOI",
+                        hintStyle: TextStyle(color: Colors.white70,fontStyle: FontStyle.italic),
+                        border: InputBorder.none,
                         ))
-                  )
-                ),
-                Expanded(
-                    flex: 2,
-                    child: MaterialButton(onPressed: ()=>enterDOI(),child: Icon(Icons.search),))
+                        )
+                        ),
+                        Expanded(
+                        flex: 2,
+                        child: MaterialButton(onPressed: ()=>enterDOI(),child: Icon(
+                      Icons.search),))
               ],
             ),
           ],

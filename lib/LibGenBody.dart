@@ -119,7 +119,10 @@ class _LibGenBodyState extends State<LibGenBody> {
                     child: Container(
                         color: Color(0xff8c6f72),
                         child: TextField(
-                            onEditingComplete: ()=>enterName(),//enterDOI(),
+                            onEditingComplete: (){
+                              if(LibGen.LibGenTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+                              else enterName();
+                            },//enterDOI(),
                             textAlign: TextAlign.center,
                             controller: LibGen.LibGenTextController,
                             cursorColor: Colors.white70,

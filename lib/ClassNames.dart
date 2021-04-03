@@ -39,17 +39,23 @@ class LibGen{
 
   static int PageNumber=1;
 
-  static List options=[
-    "title",
-    "author",
-    "series",
-    "publisher",
-    "year",
-    "isbn",
-    "language",
-    "md5",
-    "tags",
-    "extension"
+  static List languages =[
+    "all",
+    "english",
+    "polish",
+    "german",
+    "russian",
+    "french"
+  ];
+  static List extensions=[
+    "all",
+    "pdf",
+    "mobi",
+    "epub",
+    "rtf",
+    "doc",
+    "txt",
+    "rar",
   ];
 }
 class zLibrary{
@@ -58,7 +64,8 @@ class zLibrary{
     "english",
     "polish",
     "german",
-    "russian"
+    "russian",
+    "french"
   ];
   static List extensions=[
     "all",

@@ -185,23 +185,30 @@ class _zLibBodyState extends State<zLibBody> {
                         child: Container(
                           color: Color(0xff8c6f72),
                           child: TextField(
-                            onEditingComplete: () => enterBookName(), //text
-                            textAlign: TextAlign.center,
-                            controller: Utilities.textEditingController,
-                            cursorColor: Colors.white70,
-                            style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
-                            decoration: InputDecoration(
+                            onEditingComplete: (){
+                              if(Utilities.textEditingController.text.isEmpty) {
+                                GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+                              }
+                              else {
+                                enterBookName();
+                              }
+                              }, //text
+                              textAlign: TextAlign.center,
+                              controller: Utilities.textEditingController,
+                              cursorColor: Colors.white70,
+                              style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
                               hintText: "Searched phrase goes here",
                               hintStyle: TextStyle(color: Colors.white70),
                               border: InputBorder.none,
-                            ),
-                          ),
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: MaterialButton(
-                            onPressed: ()=>enterBookName(),
-                            child: Icon(
+                              ),
+                              ),
+                              )),
+                              Expanded(
+                              flex: 2,
+                              child: MaterialButton(
+                              onPressed: ()=>enterBookName(),
+                              child: Icon(
                               Icons.search,
                               color: Color(0xff263740)
                             )))
