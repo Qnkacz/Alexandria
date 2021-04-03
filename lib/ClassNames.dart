@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
@@ -17,13 +16,13 @@ class Utilities{
   static String siteRoot= "https://1lib.pl";
   static String search = "https://1lib.pl/s/";
   static String bookRoot = "https://1lib.pl/book/";
-  static String SciHubRootSite = "https://sci-hub.se/";
+  static String sciHubRootSite = "https://sci-hub.se/";
   static TextEditingController textEditingController =new TextEditingController();
-  static TextEditingController SciHubTextController = new TextEditingController();
+  static TextEditingController sciHubTextController = new TextEditingController();
   static List<LittlebookInfo> bookList = [];
-  static List<SciHubArticleInfo> SciHubAritcleList=[];
+  static List<SciHubArticleInfo> sciHubAritcleList=[];
   static String lastSearch;
-  static int PageNumber=1;
+  static int pageNumber=1;
 
   static List appLanguages =[
     "Eng",
@@ -33,16 +32,16 @@ class Utilities{
   ];
 }
 class LibGen{
-  static TextEditingController LibGenTextController = new TextEditingController();
-  static String LibGenRootSite = "http://libgen.rs";
-  static String LibGenSearchStart = "http://libgen.rs/search.php?req=";
-  static String LibGenSearchEnd = "&res=100&view=detailed";
-  static String LibGenSearchPage = "&sortmode=ASC&page=";
+  static TextEditingController libGenTextController = new TextEditingController();
+  static String libGenRootSite = "http://libgen.rs";
+  static String libGenSearchStart = "http://libgen.rs/search.php?req=";
+  static String libGenSearchEnd = "&res=100&view=detailed";
+  static String libGenSearchPage = "&sortmode=ASC&page=";
   static String lastSearch;
 
-  static List<LibGenBookInfo> LibGenbookList =[];
+  static List<LibGenBookInfo> libGenbookList =[];
 
-  static int PageNumber=1;
+  static int pageNumber=1;
 
   static List languages =[
     "all",
@@ -117,7 +116,7 @@ class GlobalWidgets{
               child: Icon(Icons.share),
             ),
             MaterialButton(onPressed: (){
-              API_Manager.LaunchInBrowser(Utilities.siteRoot + book.bookID);
+              ApiManager.LaunchInBrowser(Utilities.siteRoot + book.bookID);
             },
               child: Icon(Icons.download_rounded),
             ),

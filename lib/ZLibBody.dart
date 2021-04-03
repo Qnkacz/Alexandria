@@ -51,15 +51,15 @@ class _zLibBodyState extends State<zLibBody> {
 
   void enterBookName() {
     setState(() {
-      Utilities.PageNumber = 1;
+      Utilities.pageNumber = 1;
       Utilities.bookList.clear();
 
     });
     FocusScope.of(context).unfocus();
     String bookName = Utilities.textEditingController.text;
     GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
-    API_Manager.getSearchSite(bookName, 1)
-        .then((value) => API_Manager.getBookList(value))
+    ApiManager.getSearchSite(bookName, 1)
+        .then((value) => ApiManager.getBookList(value))
         .then(
           (value) => setState(() {
             Utilities.bookList = value;
@@ -73,8 +73,8 @@ class _zLibBodyState extends State<zLibBody> {
 
   void enterBookNameWithpage(int index) {
     FocusScope.of(context).unfocus();
-    API_Manager.goToSearchSite(index)
-        .then((value) => API_Manager.getBookList(value))
+    ApiManager.goToSearchSite(index)
+        .then((value) => ApiManager.getBookList(value))
         .then(
           (value) => setState(() {
             Utilities.bookList.addAll(value);
@@ -86,9 +86,9 @@ class _zLibBodyState extends State<zLibBody> {
   void _loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      Utilities.PageNumber++;
-      print(Utilities.PageNumber);
-      enterBookNameWithpage(Utilities.PageNumber);
+      Utilities.pageNumber++;
+      print(Utilities.pageNumber);
+      enterBookNameWithpage(Utilities.pageNumber);
     }
   }
 
@@ -118,7 +118,7 @@ class _zLibBodyState extends State<zLibBody> {
                     }
                   }
 
-                  final item = Utilities.bookList[index];
+                  //final item = Utilities.bookList[index];
                   return LittleBookCard(
                     bookInfo: Utilities.bookList[index],
                     publisher: () {
@@ -126,7 +126,7 @@ class _zLibBodyState extends State<zLibBody> {
                       String bookName;
                       setState(() {
                         FocusScope.of(context).unfocus();
-                        Utilities.PageNumber=1;
+                        Utilities.pageNumber=1;
                         bookName = Utilities.bookList[index].publisher;
                         GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookName");
                         Utilities.lastSearch = Utilities.search + bookName;
@@ -135,8 +135,8 @@ class _zLibBodyState extends State<zLibBody> {
                         print(Utilities.lastSearch);
                         Utilities.bookList.clear();
                       });
-                      API_Manager.goToSearchSite(1)
-                          .then((value) => API_Manager.getBookList(value))
+                      ApiManager.goToSearchSite(1)
+                          .then((value) => ApiManager.getBookList(value))
                           .then((value) => setState(() {
                                 Utilities.bookList = value;
                                 if(value.length==0){
@@ -147,14 +147,14 @@ class _zLibBodyState extends State<zLibBody> {
                     authorSearch: (String val) {
                       setState(() {
                         FocusScope.of(context).unfocus();
-                        Utilities.PageNumber=1;
+                        Utilities.pageNumber=1;
                         String siteUrl = Utilities.siteRoot +"/g/"+ val;
                         GlobalWidgets.showMessageFlushBar(context, "Searching for: $val");
                         Utilities.lastSearch = siteUrl;
                         Utilities.bookList.clear();
                       });
-                      API_Manager.goToSearchSite(1)
-                          .then((value) => API_Manager.getBookList(value))
+                      ApiManager.goToSearchSite(1)
+                          .then((value) => ApiManager.getBookList(value))
                           .then((value) => setState(() {
                                 Utilities.bookList = value;
                                 if(value.length==0){

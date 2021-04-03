@@ -75,13 +75,12 @@ class LittleBookCard extends StatelessWidget {
       visiblepublisher = false;
     }
     String result;
-    String dlLink;
     return Row(
       children: [
         GestureDetector(
             onTap: () => {
               if(bookInfo.imageUrl!="https://i.imgur.com/1mECa0I.png"){
-                API_Manager.getBookSiteFromId(bookInfo.bookID)
+                ApiManager.getBookSiteFromId(bookInfo.bookID)
                     .then((value) =>
                 {
                   result = value
@@ -143,7 +142,7 @@ class LittleBookCard extends StatelessWidget {
 
                     ///just open the fucking website at least
                     print(Utilities.siteRoot+bookInfo.bookID);
-                    API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
+                    ApiManager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
                   },
                 ),
               ),
@@ -263,7 +262,7 @@ class SciHubArticle extends StatelessWidget {
                 //API_Manager.LaunchInBrowser(articleInfo.downloadURL);
               ,child: Icon(Icons.download_rounded),),
               MaterialButton(onPressed: ()=>Share.share(articleInfo.shareURL),child: Icon(Icons.share),),
-              MaterialButton(onPressed: ()=>API_Manager.LaunchInBrowser(Utilities.SciHubRootSite+Utilities.SciHubTextController.text),
+              MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(Utilities.sciHubRootSite+Utilities.sciHubTextController.text),
                 child: Icon(Icons.chrome_reader_mode),),
             ],
           )
@@ -376,10 +375,10 @@ class LibGenBookCard extends StatelessWidget {
                     //
                     //     }
                     // });
-                    API_Manager.getSite(book.bookURL).then((value)async{
-                      var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
-                      String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
-                      API_Manager.getSite(downloadUrl).then((value)async{
+                    ApiManager.getSite(book.bookURL).then((value)async{
+                      var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                      String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                      ApiManager.getSite(downloadUrl).then((value)async{
                         String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
                         print(downloadUrl);
                             final status = await Permission.storage.request();

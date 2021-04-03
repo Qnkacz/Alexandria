@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
@@ -6,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
 import 'package:z_lib_app/Options.dart';
-class API_Manager{
+class ApiManager{
   static Future<dom.Document> getSite(String website) async
   {
     http.Response response = await http.get(Uri.parse(website));
@@ -116,14 +115,14 @@ class API_Manager{
 
     List<LittlebookInfo> bookInfoList = [];
     bookList.forEach((element) {
-      var url_obj;
+      var urlObj;
       var url;
-      url_obj = element.getElementsByClassName("cover lazy");
-      if(url_obj.length==0){
+      urlObj = element.getElementsByClassName("cover lazy");
+      if(urlObj.length==0){
         url = element.getElementsByClassName("cover").first.attributes['src'];
       }
       else{
-        url =url_obj.first.attributes['data-src'];
+        url =urlObj.first.attributes['data-src'];
       }
       var name = element.getElementsByClassName(Names.resItemTable).first.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].text.trim();
       var bookID = element.getElementsByClassName(Names.resItemTable).first.children[0].children[0].children[1].children[0].children[0].children[0].children[0].children[0].children[0].attributes['href'];
@@ -192,8 +191,6 @@ class API_Manager{
     }
   }
   static Future<dynamic> GetSciHubResult(dom.Document document,dynamic context) async{
-    String share;
-    String dlLink;
     List<SciHubArticleInfo> list =[];
     var s = document.getElementById("link");
     var shareObj;
@@ -211,7 +208,7 @@ class API_Manager{
   }
 
   static Future<dom.Document> getLibGenSearchSite(String bookName, int pageNumber) async {
-    String site = LibGen.LibGenSearchStart+bookName+LibGen.LibGenSearchEnd+LibGen.LibGenSearchPage+LibGen.PageNumber.toString();
+    String site = LibGen.libGenSearchStart+bookName+LibGen.libGenSearchEnd+LibGen.libGenSearchPage+LibGen.pageNumber.toString();
     print(site);
     http.Response response = await http.get(Uri.parse(site));
     dom.Document document = parser.parse(response.body);
@@ -238,7 +235,7 @@ class API_Manager{
         coverUrl= coverUrl.replaceAll("/covers/", "").trim();
       }
       else{
-        coverUrl = LibGen.LibGenRootSite+coverUrl;
+        coverUrl = LibGen.libGenRootSite+coverUrl;
       }
 
       /// title
@@ -292,7 +289,7 @@ class API_Manager{
         extension="not given";
       }
       ///bookurl
-      String url =LibGen.LibGenRootSite+content[0].children[2].children[0].children[0].attributes['href'].replaceFirst("..", "").trim();
+      String url =LibGen.libGenRootSite+content[0].children[2].children[0].children[0].attributes['href'].replaceFirst("..", "").trim();
       LibGenBookInfo book = new LibGenBookInfo(imageUrl: coverUrl, title: title,bookURL: url,series: series,authors: authors,publisher: publisher,year: year,language: language,ISBN: ISBN,size: size,pages: pages,extention: extension);
 
       bookInfoList.add(book);

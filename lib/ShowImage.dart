@@ -35,7 +35,7 @@ class ShowImage extends StatelessWidget {
                 children: [
                   MaterialButton(onPressed: ()=>Share.share(Utilities.siteRoot + book.bookID),child: Icon(Icons.share),),
                   MaterialButton(onPressed: ()async{
-                    API_Manager.LaunchInBrowser(Utilities.siteRoot+book.bookID);
+                    ApiManager.LaunchInBrowser(Utilities.siteRoot+book.bookID);
                   },child: Icon(Icons.download_rounded),),
                 ],
               )
@@ -77,10 +77,10 @@ class ShowMoreInfo extends StatelessWidget {
                 children: [
                   MaterialButton(onPressed: ()=>Share.share(book.bookURL),child: Icon(Icons.share),),
                   MaterialButton(onPressed: ()async{
-                    API_Manager.getSite(book.bookURL).then((value)async{
+                    ApiManager.getSite(book.bookURL).then((value)async{
                       var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
                       String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
-                      API_Manager.getSite(downloadUrl).then((value)async{
+                      ApiManager.getSite(downloadUrl).then((value)async{
                         String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
                         print(downloadUrl);
                         final status = await Permission.storage.request();
@@ -96,7 +96,7 @@ class ShowMoreInfo extends StatelessWidget {
                       });
                     });
                   },child: Icon(Icons.download_rounded),),
-                  MaterialButton(onPressed: ()=>API_Manager.LaunchInBrowser(book.bookURL),child: Icon(Icons.web_asset_sharp),),
+                  MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(book.bookURL),child: Icon(Icons.web_asset_sharp),),
                 ],
               )
             ],

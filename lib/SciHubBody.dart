@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
@@ -16,15 +15,15 @@ class _SciHubBodyState extends State<SciHubBody> {
   ScrollController scrollController;
   enterDOI(){
     setState(() {
-      Utilities.PageNumber = 1;
-      Utilities.SciHubAritcleList.clear();
+      Utilities.pageNumber = 1;
+      Utilities.sciHubAritcleList.clear();
     });
     FocusScope.of(context).unfocus();
-    String providetURL =Utilities.SciHubRootSite+Utilities.SciHubTextController.text.trim();
-    API_Manager.getSite(providetURL).then((value) => API_Manager.GetSciHubResult(value,context)).then((value) =>
+    String providetURL =Utilities.sciHubRootSite+Utilities.sciHubTextController.text.trim();
+    ApiManager.getSite(providetURL).then((value) => ApiManager.GetSciHubResult(value,context)).then((value) =>
     setState((){
-      Utilities.SciHubAritcleList=value;
-      print(Utilities.SciHubAritcleList.length);
+      Utilities.sciHubAritcleList=value;
+      print(Utilities.sciHubAritcleList.length);
     })
     );
   }
@@ -33,9 +32,9 @@ class _SciHubBodyState extends State<SciHubBody> {
     return Scaffold(
       body: SafeArea(
           child: ListView.builder(
-              itemCount: Utilities.SciHubAritcleList.length,
+              itemCount: Utilities.sciHubAritcleList.length,
               itemBuilder: (context,index){
-                final item = Utilities.SciHubAritcleList[index];
+                final item = Utilities.sciHubAritcleList[index];
                 return SciHubArticle(articleInfo: item);
           })
       ),
@@ -59,11 +58,11 @@ class _SciHubBodyState extends State<SciHubBody> {
                     color: Color(0xff8c6f72),
                     child: TextField(
                       onEditingComplete: () {
-                        if(Utilities.SciHubTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+                        if(Utilities.sciHubTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
                         else enterDOI();
                       },
                         textAlign: TextAlign.center,
-                        controller: Utilities.SciHubTextController,
+                        controller: Utilities.sciHubTextController,
                         cursorColor: Colors.white70,
                         style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                         decoration: InputDecoration(

@@ -80,14 +80,14 @@ class _OptionsState extends State<Options> {
   //todo: review this functions
   void LibGenRemoveLanguage(String language){
     setState(() {
-      LibGen.LibGenbookList.removeWhere((element) => (element.language!=language));
+      LibGen.libGenbookList.removeWhere((element) => (element.language!=language));
     });
     if(language!=null) GlobalWidgets.showMessageFlushBar(context, "Showing only $language books");
     else GlobalWidgets.showMessageFlushBar(context, "Reseted the language filter");
   }
   void LibGenRemoveExtensiion(String extension){
     setState(() {
-      LibGen.LibGenbookList.removeWhere((element) => (element.extention != extension));
+      LibGen.libGenbookList.removeWhere((element) => (element.extention != extension));
     });
     if(extension!=null)GlobalWidgets.showMessageFlushBar(context, "Showing only $extension books");
     else GlobalWidgets.showMessageFlushBar(context, "Reseted the extension filter");
@@ -98,7 +98,7 @@ class _OptionsState extends State<Options> {
     }
     else{
       setState(() {
-        LibGen.LibGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) <int.parse(year));
+        LibGen.libGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) <int.parse(year));
       });
       GlobalWidgets.showMessageFlushBar(context, "Showing only books from $year and older");
     }
@@ -110,7 +110,7 @@ class _OptionsState extends State<Options> {
     }
     else{
       setState(() {
-        LibGen.LibGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) >int.parse(year));
+        LibGen.libGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) >int.parse(year));
       });
       GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and younger");
     }
@@ -215,7 +215,7 @@ class _OptionsState extends State<Options> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              API_Manager.LaunchInBrowser(
+                              ApiManager.LaunchInBrowser(
                                   "https://github.com/Qnkacz");
                             },
                             child: Container(
@@ -306,7 +306,7 @@ class _OptionsState extends State<Options> {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          API_Manager.LaunchInBrowser("https://z-lib.org/"),
+                          ApiManager.LaunchInBrowser("https://z-lib.org/"),
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -324,7 +324,7 @@ class _OptionsState extends State<Options> {
                     ),
                     GestureDetector(
                       onTap: () =>
-                          API_Manager.LaunchInBrowser("https://sci-hub.se/"),
+                          ApiManager.LaunchInBrowser("https://sci-hub.se/"),
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -342,7 +342,7 @@ class _OptionsState extends State<Options> {
                     ),
                     GestureDetector(
                       onTap: () =>
-                          API_Manager.LaunchInBrowser("http://libgen.rs/"),
+                          ApiManager.LaunchInBrowser("http://libgen.rs/"),
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),

@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
@@ -16,15 +14,15 @@ class _LibGenBodyState extends State<LibGenBody> {
   ScrollController scrollController;
   enterName(){
     setState(() {
-      LibGen.PageNumber = 1;
-      LibGen.LibGenbookList.clear();
+      LibGen.pageNumber = 1;
+      LibGen.libGenbookList.clear();
     });
     FocusScope.of(context).unfocus();
-    String bookname = LibGen.LibGenTextController.text.trim();
+    String bookname = LibGen.libGenTextController.text.trim();
     GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookname");
     LibGen.lastSearch=bookname;
-    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
-      LibGen.LibGenbookList=value;
+    ApiManager.getLibGenSearchSite(bookname, 1).then((value) => ApiManager.getLibgenBookList(value)).then((value) => setState((){
+      LibGen.libGenbookList=value;
       if(value.length==0){
         GlobalWidgets.showErrorFlushBar(context, "Sorry, we couldn't find $bookname");
       }
@@ -32,16 +30,16 @@ class _LibGenBodyState extends State<LibGenBody> {
   }
   searchPublisher(String name){
     setState(() {
-      LibGen.PageNumber = 1;
-      LibGen.LibGenbookList.clear();
+      LibGen.pageNumber = 1;
+      LibGen.libGenbookList.clear();
     });
     FocusScope.of(context).unfocus();
     String bookname = name.trim();
     GlobalWidgets.showMessageFlushBar(context, "Searching for: $bookname");
     LibGen.lastSearch=bookname;
     print(bookname);
-    API_Manager.getLibGenSearchSite(bookname, 1).then((value) => API_Manager.getLibgenBookList(value)).then((value) => setState((){
-      LibGen.LibGenbookList=value;
+    ApiManager.getLibGenSearchSite(bookname, 1).then((value) => ApiManager.getLibgenBookList(value)).then((value) => setState((){
+      LibGen.libGenbookList=value;
       if(value.length==0){
         GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookname, :(");
       }
@@ -55,11 +53,11 @@ class _LibGenBodyState extends State<LibGenBody> {
   void enterBookNameWithpage(int index) {
     FocusScope.of(context).unfocus();
     print(LibGen.lastSearch);
-    API_Manager.getLibGenSearchSite(LibGen.lastSearch,index)
-        .then((value) => API_Manager.getLibgenBookList(value))
+    ApiManager.getLibGenSearchSite(LibGen.lastSearch,index)
+        .then((value) => ApiManager.getLibgenBookList(value))
         .then(
           (value) => setState(() {
-        LibGen.LibGenbookList.addAll(value);
+        LibGen.libGenbookList.addAll(value);
       }),
     )
         .then((value) => print(Utilities.bookList.length));
@@ -68,21 +66,21 @@ class _LibGenBodyState extends State<LibGenBody> {
     //todo: review and do
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-        LibGen.PageNumber++;
-         enterBookNameWithpage(LibGen.PageNumber);
+        LibGen.pageNumber++;
+         enterBookNameWithpage(LibGen.pageNumber);
     }
   }
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(child: ListView.builder(
-          itemCount: LibGen.LibGenbookList.length,
+          itemCount: LibGen.libGenbookList.length,
           controller: scrollController,
           itemBuilder: (context,index){
-            if (LibGen.LibGenbookList.length == 0) {
+            if (LibGen.libGenbookList.length == 0) {
               return Container();
             }
-            if (index == LibGen.LibGenbookList.length) {
-              if(LibGen.LibGenbookList.length>=100){
+            if (index == LibGen.libGenbookList.length) {
+              if(LibGen.libGenbookList.length>=100){
                 return LinearProgressIndicator(
                   backgroundColor: Colors.grey[900],
                   valueColor:
@@ -94,9 +92,9 @@ class _LibGenBodyState extends State<LibGenBody> {
               }
             }
 
-            final item = LibGen.LibGenbookList[index];
+            //final item = LibGen.libGenbookList[index];
             return LibGenBookCard(
-              book: LibGen.LibGenbookList[index],
+              book: LibGen.libGenbookList[index],
               publisherSearch: (String val)=>searchPublisher(val),
             );
           })),
@@ -120,11 +118,11 @@ class _LibGenBodyState extends State<LibGenBody> {
                         color: Color(0xff8c6f72),
                         child: TextField(
                             onEditingComplete: (){
-                              if(LibGen.LibGenTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+                              if(LibGen.libGenTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
                               else enterName();
                             },//enterDOI(),
                             textAlign: TextAlign.center,
-                            controller: LibGen.LibGenTextController,
+                            controller: LibGen.libGenTextController,
                             cursorColor: Colors.white70,
                             style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                             decoration: InputDecoration(
