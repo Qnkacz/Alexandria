@@ -41,11 +41,11 @@ class LibGen{
 
   static List languages =[
     "all",
-    "english",
-    "polish",
-    "german",
-    "russian",
-    "french"
+    "English",
+    "Polish",
+    "German",
+    "Russian",
+    "French"
   ];
   static List extensions=[
     "all",

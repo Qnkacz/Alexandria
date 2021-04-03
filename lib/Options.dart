@@ -39,7 +39,7 @@ class _OptionsState extends State<Options> {
       setState(() {
         Utilities.bookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) <int.parse(year));
       });
-      GlobalWidgets.showMessageFlushBar(context, "Showing only books from $year and younger");
+      GlobalWidgets.showMessageFlushBar(context, "Showing only books from $year and older");
     }
 
   }
@@ -51,7 +51,7 @@ class _OptionsState extends State<Options> {
       setState(() {
         Utilities.bookList.removeWhere((element) => int.parse(element.year) >int.parse(year));
       });
-      GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and older");
+      GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and younger");
     }
 
   }
@@ -72,26 +72,26 @@ class _OptionsState extends State<Options> {
     else GlobalWidgets.showMessageFlushBar(context, "Reseted the extension filter");
   }
   void LibGenRemoveBookBelowYear(String year){
-    if(SavedOptions.zlibYearFrom.isEmpty || SavedOptions.zlibYearFrom=="year"){
+    if(SavedOptions.libGenYearFrom.isEmpty || SavedOptions.libGenYearFrom=="year"){
       GlobalWidgets.showMessageFlushBar(context, "Reseted year from filter");
     }
     else{
       setState(() {
         LibGen.LibGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) <int.parse(year));
       });
-      GlobalWidgets.showMessageFlushBar(context, "Showing only books from $year and younger");
+      GlobalWidgets.showMessageFlushBar(context, "Showing only books from $year and older");
     }
 
   }
   void LibGenRemoveBookAboveYear(String year){
-    if(SavedOptions.zlibYearTo.isEmpty || SavedOptions.zlibYearTo=="year"){
+    if(SavedOptions.libGenYearTo.isEmpty || SavedOptions.libGenYearTo=="year"){
       GlobalWidgets.showMessageFlushBar(context, "Reseted year from filter");
     }
     else{
       setState(() {
-        LibGen.LibGenbookList.removeWhere((element) => int.parse(element.year) >int.parse(year));
+        LibGen.LibGenbookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) >int.parse(year));
       });
-      GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and older");
+      GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and younger");
     }
 
   }
@@ -508,7 +508,7 @@ class _OptionsState extends State<Options> {
                     ///LibGen options
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10,0,10,0),
-                      child: ExpansionTile(title: Text("Z-library"),
+                      child: ExpansionTile(title: Text("Library Genesis"),
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
@@ -524,6 +524,9 @@ class _OptionsState extends State<Options> {
                                     onChanged: (value) {
                                       setState(() {
                                         SavedOptions.libGenchosenLanguage = value;
+                                        if(SavedOptions.libGenchosenLanguage=="all"){
+                                          SavedOptions.libGenchosenLanguage=null;
+                                        }
                                         LibGenRemoveLanguage(SavedOptions.libGenchosenLanguage);
                                       });
                                     },
@@ -550,7 +553,10 @@ class _OptionsState extends State<Options> {
                                     onChanged: (value) {
                                       setState(() {
                                         SavedOptions.libGenchosenExt = value;
-                                        zLibRemoveExtensiion(SavedOptions.libGenchosenExt);
+                                        if(SavedOptions.libGenchosenExt=="all"){
+                                          SavedOptions.libGenchosenExt=null;
+                                        }
+                                        LibGenRemoveExtensiion(SavedOptions.libGenchosenExt);
                                       });
                                     },
                                     items: LibGen.extensions.map((e) {
@@ -577,16 +583,16 @@ class _OptionsState extends State<Options> {
                                           SavedOptions.libGenYearFrom = "year";
                                         }
                                         else{
-                                          SavedOptions.libGenYearFrom = zLibYearFromController.text;
+                                          SavedOptions.libGenYearFrom = libGenYearFromController.text;
                                         }
-                                        zLibRemoveBookBelowYear(SavedOptions.libGenYearFrom);
+                                        LibGenRemoveBookBelowYear(SavedOptions.libGenYearFrom);
                                       },
                                       controller: libGenYearFromController,
                                       keyboardType: TextInputType.number,
                                       style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                       cursorColor: Colors.white70,
                                       decoration: InputDecoration(
-                                          hintText: SavedOptions.zlibYearFrom,
+                                          hintText: SavedOptions.libGenYearFrom,
                                           hintStyle: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                           focusColor: Colors.black54,
                                           border: InputBorder.none
@@ -612,14 +618,14 @@ class _OptionsState extends State<Options> {
                                         else{
                                           SavedOptions.libGenYearTo = libGenYearToController.text;
                                         }
-                                        zLibRemoveBookAboveYear(SavedOptions.libGenYearTo );
+                                        LibGenRemoveBookAboveYear(SavedOptions.libGenYearTo );
                                       },
                                       controller: libGenYearToController,
                                       keyboardType: TextInputType.number,
                                       style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                       cursorColor: Colors.white70,
                                       decoration: InputDecoration(
-                                          hintText: SavedOptions.zlibYearTo,
+                                          hintText: SavedOptions.libGenYearTo,
                                           hintStyle: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                           focusColor: Colors.black54,
                                           border: InputBorder.none
