@@ -26,7 +26,9 @@ class _OptionsState extends State<Options> {
   }
   void zLibRemoveExtensiion(String extension){
     setState(() {
-      Utilities.bookList.removeWhere((element) => (!element.file.contains(extension.toUpperCase())));
+      if(extension!=null){
+        Utilities.bookList.removeWhere((element) => (!element.file.contains(extension.toUpperCase())));
+      }
     });
     if(extension!=null)GlobalWidgets.showMessageFlushBar(context, "Showing only $extension books");
     else GlobalWidgets.showMessageFlushBar(context, "Reseted the extension filter");
@@ -49,11 +51,27 @@ class _OptionsState extends State<Options> {
     }
     else{
       setState(() {
-        Utilities.bookList.removeWhere((element) => int.parse(element.year) >int.parse(year));
+        Utilities.bookList.removeWhere((element) => element.year=="not given" || int.parse(element.year) >int.parse(year));
       });
       GlobalWidgets.showMessageFlushBar(context, "Showing only books till $year and younger");
     }
 
+  }
+
+  void resetZlibFilters(){
+    setState(() {
+      SavedOptions.zLibchosenLanguage=null;
+      SavedOptions.zLibchosenExt=null;
+      SavedOptions.zlibYearFrom = "year";
+      SavedOptions.zlibYearTo = "year";
+    });
+    GlobalWidgets.showMessageFlushBar(context, "wiped z-library filters!");
+  }
+  void resetLibGenFilters(){
+    SavedOptions.libGenchosenLanguage=null;
+    SavedOptions.libGenchosenExt=null;
+    SavedOptions.libGenYearFrom = "year";
+    SavedOptions.libGenYearTo = "year";
   }
 
   //todo: review this functions
@@ -376,7 +394,12 @@ class _OptionsState extends State<Options> {
                     /// Z liblary options
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10,0,10,0),
-                      child: ExpansionTile(title: Text("Z-library"),
+                      child: ExpansionTile(title: Row(
+                        children: [
+                          IconButton(icon: Icon(Icons.refresh), onPressed: (){resetZlibFilters();}),
+                          Text("Z-library"),
+                        ],
+                      ),
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
@@ -447,6 +470,7 @@ class _OptionsState extends State<Options> {
                                     height: 30,
                                     child: TextField(
                                       onEditingComplete: (){
+                                        FocusScope.of(context).unfocus();
                                         if(zLibYearFromController.text==null || zLibYearFromController.text.isEmpty){
                                           SavedOptions.zlibYearFrom = "year";
                                         }
@@ -480,12 +504,14 @@ class _OptionsState extends State<Options> {
                                     height: 30,
                                     child: TextField(
                                       onEditingComplete: (){
+                                        FocusScope.of(context).unfocus();
                                         if(zLibYearToController.text==null || zLibYearToController.text.isEmpty){
                                           SavedOptions.zlibYearTo="year";
                                         }
                                         else{
                                           SavedOptions.zlibYearTo = zLibYearToController.text;
                                         }
+                                        print(SavedOptions.zlibYearTo);
                                         zLibRemoveBookAboveYear(SavedOptions.zlibYearTo );
                                       },
                                       controller: zLibYearToController,
@@ -508,7 +534,12 @@ class _OptionsState extends State<Options> {
                     ///LibGen options
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10,0,10,0),
-                      child: ExpansionTile(title: Text("Library Genesis"),
+                      child: ExpansionTile(title: Row(
+                        children: [
+                          IconButton(icon: Icon(Icons.refresh), onPressed: (){resetLibGenFilters();}),
+                          Text("Library Genesis"),
+                        ],
+                      ),
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30.0,0,30,0),
@@ -579,6 +610,7 @@ class _OptionsState extends State<Options> {
                                     height: 30,
                                     child: TextField(
                                       onEditingComplete: (){
+                                        FocusScope.of(context).unfocus();
                                         if(libGenYearFromController.text==null || libGenYearFromController.text.isEmpty){
                                           SavedOptions.libGenYearFrom = "year";
                                         }
@@ -612,6 +644,7 @@ class _OptionsState extends State<Options> {
                                     height: 30,
                                     child: TextField(
                                       onEditingComplete: (){
+                                        FocusScope.of(context).unfocus();
                                         if(libGenYearToController.text==null || libGenYearToController.text.isEmpty){
                                           SavedOptions.libGenYearTo="year";
                                         }

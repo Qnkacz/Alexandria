@@ -23,7 +23,7 @@ class API_Manager{
     if(SavedOptions.zlibYearTo!="year"){
       if(!site.contains("?"))
       {
-        site=site+"/?yearTo="+SavedOptions.zlibYearFrom;
+        site=site+"/?yearTo="+SavedOptions.zlibYearTo;
       }
       else{
         site=site+"&yearTo="+SavedOptions.zlibYearTo;
@@ -60,12 +60,19 @@ class API_Manager{
   static Future<dom.Document> goToSearchSite(int pageNumber) async {
     String site = Utilities.lastSearch;
     if(SavedOptions.zlibYearFrom!="year"){
-      site=site+"/?yearFrom="+SavedOptions.zlibYearFrom;
+
+    if(!site.contains("?"))
+    {
+    site=site+"/?yearFrom="+SavedOptions.zlibYearFrom;
+    }
+    else{
+    site=site+"&yearFrom="+SavedOptions.zlibYearFrom;
+    }
     }
     if(SavedOptions.zlibYearTo!="year"){
       if(!site.contains("?"))
       {
-        site=site+"/?yearTo="+SavedOptions.zlibYearFrom;
+        site=site+"/?yearTo="+SavedOptions.zlibYearTo;
       }
       else{
         site=site+"&yearTo="+SavedOptions.zlibYearTo;
@@ -81,7 +88,7 @@ class API_Manager{
         site=site+"&language="+SavedOptions.zLibchosenLanguage;
       }
     }
-    if(SavedOptions.zLibchosenExt!=null || SavedOptions.zLibchosenExt!="all"){
+    if(SavedOptions.zLibchosenExt!=null && SavedOptions.zLibchosenExt!="all"){
       if(!site.contains("?"))
       {
         site=site+"/?extension="+SavedOptions.zLibchosenExt;
