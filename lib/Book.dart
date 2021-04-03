@@ -92,117 +92,114 @@ class LittleBookCard extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ShowImage(result)))
+                          builder: (context) => ShowImage(bookInfo)))
                 })
               }
                 },
             child: Image.network(bookInfo.imageUrl)),
         Expanded(
-          child: Slidable(
-            actionPane: SlidableStrechActionPane(),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                child: IconSlideAction(
-                    color: Color(0xff6a8999),
-                    icon: Icons.share,
-                    onTap: () {
-                      Share.share(Utilities.siteRoot + bookInfo.bookID);
-                    }),
-              ),
-              Padding(
-                //todo download
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                child: IconSlideAction(
-                  color: Color(0xff6a8999),
-                  icon: Icons.download_rounded,
-                  onTap: () async{
-                    ///proper way of downloading
-                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
-                    //     .then((value) => {
-                    //           dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
-                    //           print(dlLink),
-                    //         }).then((value) async{
-                    //   final status = await Permission.storage.request();
-                    //   if(status.isGranted){
-                    //
-                    //     final externalDir = await getExternalStorageDirectory();
-                    //
-                    //     final id = await FlutterDownloader.enqueue(url: dlLink, savedDir: externalDir.path,fileName: bookInfo.title,showNotification: true,openFileFromNotification: true);
-                    //
-                    //   }else{
-                    //
-                    //   }
-                    // });
-                    /// just open it in a fucking browser bro
-                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
-                    //     .then((value) => {
-                    //   dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
-                    //   print(dlLink),
-                    // }).then((value) => API_Manager.LaunchInBrowser(dlLink));
+            child: Slidable(
+              actionPane: SlidableStrechActionPane(),
+              actions: [
+                Row(
+                  children: [
+                    IconSlideAction(
+                        color: Color(0xff6a8999),
+                        icon: Icons.share,
+                        onTap: () {
+                          Share.share(Utilities.siteRoot + bookInfo.bookID);
+                        }),
+                    IconSlideAction(
+                      color: Color(0xff6a8999),
+                      icon: Icons.download_rounded,
+                      onTap: () async{
+                        ///proper way of downloading
+                        // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                        //     .then((value) => {
+                        //           dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                        //           print(dlLink),
+                        //         }).then((value) async{
+                        //   final status = await Permission.storage.request();
+                        //   if(status.isGranted){
+                        //
+                        //     final externalDir = await getExternalStorageDirectory();
+                        //
+                        //     final id = await FlutterDownloader.enqueue(url: dlLink, savedDir: externalDir.path,fileName: bookInfo.title,showNotification: true,openFileFromNotification: true);
+                        //
+                        //   }else{
+                        //
+                        //   }
+                        // });
+                        /// just open it in a fucking browser bro
+                        // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                        //     .then((value) => {
+                        //   dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                        //   print(dlLink),
+                        // }).then((value) => API_Manager.LaunchInBrowser(dlLink));
 
-                    ///just open the fucking website at least
-                    print(Utilities.siteRoot+bookInfo.bookID);
-                    API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
-                  },
+                        ///just open the fucking website at least
+                        print(Utilities.siteRoot+bookInfo.bookID);
+                        API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
+                      },
+                    ),
+                  ],
                 ),
-              ),
-            ],
-            child: Card(
-              color: Color(0xff4f6773),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(bookInfo.title,style: TextStyle(color: Colors.white60),),
-                  ),
-                  Visibility(
-                    visible: visiblepublisher,
-                    child: GestureDetector(
-                      onTap: publisher,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                        child: Container(
-                          child: Text(bookInfo.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+              ],
+              child: Card(
+                color: Color(0xff4f6773),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(bookInfo.title,style: TextStyle(color: Colors.white60),),
+                    ),
+                    Visibility(
+                      visible: visiblepublisher,
+                      child: GestureDetector(
+                        onTap: publisher,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          child: Container(
+                            child: Text(bookInfo.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: bookInfo.authors.length,
-                        itemBuilder: (context, index) {
-                          return LittleBookAuthors(bookInfo.authors[index],
-                              bookInfo.authorsURL[index], authorSearch);
-                        }),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "Year: " + bookInfo.year,
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                      Text(
-                        "Language: " + bookInfo.leanguage,
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                      Text(
-                        "FIle: " + bookInfo.file,
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                    ],
-                  )
-                ],
+                    SizedBox(
+                      height: 30,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: bookInfo.authors.length,
+                          itemBuilder: (context, index) {
+                            return LittleBookAuthors(bookInfo.authors[index],
+                                bookInfo.authorsURL[index], authorSearch);
+                          }),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Year: " + bookInfo.year,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                        Text(
+                          "Language: " + bookInfo.leanguage,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                        Text(
+                          "FIle: " + bookInfo.file,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        )
       ],
     );
   }

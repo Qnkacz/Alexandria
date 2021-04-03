@@ -68,10 +68,13 @@ class _OptionsState extends State<Options> {
     GlobalWidgets.showMessageFlushBar(context, "wiped z-library filters!");
   }
   void resetLibGenFilters(){
-    SavedOptions.libGenchosenLanguage=null;
-    SavedOptions.libGenchosenExt=null;
-    SavedOptions.libGenYearFrom = "year";
-    SavedOptions.libGenYearTo = "year";
+    setState(() {
+      SavedOptions.libGenchosenLanguage=null;
+      SavedOptions.libGenchosenExt=null;
+      SavedOptions.libGenYearFrom = "year";
+      SavedOptions.libGenYearTo = "year";
+    });
+    GlobalWidgets.showMessageFlushBar(context, "wiped Library Genesis filters!");
   }
 
   //todo: review this functions
@@ -359,9 +362,18 @@ class _OptionsState extends State<Options> {
                 ),
                 ///opcje
                 ExpansionTile(
-                  title: Text(
-                    "Options",
-                    style: TextStyle(color: Colors.black87),
+                  title: Row(
+                    children: [
+                      IconButton(icon: Icon(Icons.refresh), onPressed: (){
+                        resetZlibFilters();
+                        resetLibGenFilters();
+                        GlobalWidgets.showMessageFlushBar(context, "Wiped all settings");
+                      }),
+                      Text(
+                        "Options",
+                        style: TextStyle(color: Colors.black87),
+                      ),
+                    ],
                   ),
                   trailing: FaIcon(FontAwesomeIcons.cog),
                   children: [

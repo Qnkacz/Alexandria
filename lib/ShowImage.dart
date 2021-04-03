@@ -9,14 +9,39 @@ import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
 
 class ShowImage extends StatelessWidget {
-  String url;
-  ShowImage(this.url);
+  LittlebookInfo book;
+  ShowImage(this.book);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xff4f6773),
-      child: Center(
-        child: Image.network(url)
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          color: Colors.blueGrey[300],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                  height: 350,
+                  child: Image.network(book.imageUrl)
+              ),
+              MoreInfoClickableInfo("title",book.title),
+              MoreInfoClickableInfo("publisher",book.publisher),
+              MoreInfoClickableInfo("authors",book.authors.join(" ")),
+              MoreInfoClickableInfo("file",book.file),
+              MoreInfoClickableInfo("language",book.leanguage),
+              MoreInfoClickableInfo("year",book.year),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(onPressed: ()=>Share.share(Utilities.siteRoot + book.bookID),child: Icon(Icons.share),),
+                  MaterialButton(onPressed: ()async{
+                    API_Manager.LaunchInBrowser(Utilities.siteRoot+book.bookID);
+                  },child: Icon(Icons.download_rounded),),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
