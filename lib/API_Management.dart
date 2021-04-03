@@ -291,6 +291,25 @@ class API_Manager{
       bookInfoList.add(book);
     });
 
+    ///remove language
+    if(SavedOptions.libGenchosenLanguage!=null){
+      bookInfoList.removeWhere((element) => (element.language!=SavedOptions.libGenchosenLanguage));
+    }
+
+    ///remove extension
+    if(SavedOptions.libGenchosenExt!=null){
+      bookInfoList.removeWhere((element) => (element.extention != SavedOptions.libGenchosenExt));
+    }
+
+    ///remove year from year below
+    if(SavedOptions.libGenYearFrom!="year"){
+      bookInfoList.removeWhere((element) => element.year=="not given" || int.parse(element.year) <int.parse(SavedOptions.libGenYearFrom));
+    }
+
+    ///remove year from year above
+    if(SavedOptions.libGenYearTo!="year"){
+      bookInfoList.removeWhere((element) => element.year=="not given" || int.parse(element.year) >int.parse(SavedOptions.libGenYearTo));
+    }
     return bookInfoList;
   }
   static Future<dynamic> GetLibGenResult(dom.Document document,dynamic context) async{
