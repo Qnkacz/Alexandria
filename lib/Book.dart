@@ -98,53 +98,58 @@ class LittleBookCard extends StatelessWidget {
                 },
             child: Image.network(bookInfo.imageUrl)),
         Expanded(
-            child: Slidable(
-              actionPane: SlidableStrechActionPane(),
-              actions: [
-                Row(
-                  children: [
-                    IconSlideAction(
-                        color: Color(0xff6a8999),
-                        icon: Icons.share,
-                        onTap: () {
-                          Share.share(Utilities.siteRoot + bookInfo.bookID);
-                        }),
-                    IconSlideAction(
-                      color: Color(0xff6a8999),
-                      icon: Icons.download_rounded,
-                      onTap: () async{
-                        ///proper way of downloading
-                        // API_Manager.getBookSiteFromId(bookInfo.bookID)
-                        //     .then((value) => {
-                        //           dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
-                        //           print(dlLink),
-                        //         }).then((value) async{
-                        //   final status = await Permission.storage.request();
-                        //   if(status.isGranted){
-                        //
-                        //     final externalDir = await getExternalStorageDirectory();
-                        //
-                        //     final id = await FlutterDownloader.enqueue(url: dlLink, savedDir: externalDir.path,fileName: bookInfo.title,showNotification: true,openFileFromNotification: true);
-                        //
-                        //   }else{
-                        //
-                        //   }
-                        // });
-                        /// just open it in a fucking browser bro
-                        // API_Manager.getBookSiteFromId(bookInfo.bookID)
-                        //     .then((value) => {
-                        //   dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
-                        //   print(dlLink),
-                        // }).then((value) => API_Manager.LaunchInBrowser(dlLink));
+          child: Slidable(
+            actionPane: SlidableStrechActionPane(),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: IconSlideAction(
+                    color: Color(0xff6a8999),
+                    icon: Icons.share,
+                    onTap: () {
+                      Share.share(Utilities.siteRoot + bookInfo.bookID);
+                    }),
+              ),
+              Padding(
+                //todo download
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: IconSlideAction(
+                  color: Color(0xff6a8999),
+                  icon: Icons.download_rounded,
+                  onTap: () async{
+                    ///proper way of downloading
+                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                    //     .then((value) => {
+                    //           dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                    //           print(dlLink),
+                    //         }).then((value) async{
+                    //   final status = await Permission.storage.request();
+                    //   if(status.isGranted){
+                    //
+                    //     final externalDir = await getExternalStorageDirectory();
+                    //
+                    //     final id = await FlutterDownloader.enqueue(url: dlLink, savedDir: externalDir.path,fileName: bookInfo.title,showNotification: true,openFileFromNotification: true);
+                    //
+                    //   }else{
+                    //
+                    //   }
+                    // });
+                    /// just open it in a fucking browser bro
+                    // API_Manager.getBookSiteFromId(bookInfo.bookID)
+                    //     .then((value) => {
+                    //   dlLink=Utilities.siteRoot+ value.getElementsByClassName("btn btn-primary dlButton addDownloadedBook").first.attributes['href'],
+                    //   print(dlLink),
+                    // }).then((value) => API_Manager.LaunchInBrowser(dlLink));
 
-                        ///just open the fucking website at least
-                        print(Utilities.siteRoot+bookInfo.bookID);
-                        API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
-                      },
-                    ),
-                  ],
+                    ///just open the fucking website at least
+                    print(Utilities.siteRoot+bookInfo.bookID);
+                    API_Manager.LaunchInBrowser(Utilities.siteRoot+bookInfo.bookID);
+                  },
                 ),
-              ],
+              ),
+            ],
+            child: GestureDetector(
+              onTap: ()=>GlobalWidgets.zLibDownloadDialog(context,bookInfo),
               child: Card(
                 color: Color(0xff4f6773),
                 child: Column(
@@ -200,6 +205,7 @@ class LittleBookCard extends StatelessWidget {
               ),
             ),
           ),
+        )
       ],
     );
   }

@@ -1,6 +1,11 @@
+import 'dart:ui';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share/share.dart';
+import 'package:z_lib_app/API_Management.dart';
 import 'package:z_lib_app/Book.dart';
 
 class Names{
@@ -94,4 +99,30 @@ class GlobalWidgets{
     message: msg,
     flushbarPosition: FlushbarPosition.TOP,
   )..show(context);
+
+  static void zLibDownloadDialog(BuildContext context,LittlebookInfo book)=>showDialog(
+      context: context,
+      builder: (context)=>BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3,sigmaY: 3),
+        child: new AlertDialog(
+          backgroundColor: Colors.blueGrey,
+          elevation: 0,
+          title: Text("Z-library book"),
+          content: Text(book.title),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: Color(0xffD9B7AB))),
+          actions: [
+            MaterialButton(onPressed: (){
+              Share.share(Utilities.siteRoot + book.bookID);
+            },
+              child: Icon(Icons.share),
+            ),
+            MaterialButton(onPressed: (){
+              API_Manager.LaunchInBrowser(Utilities.siteRoot + book.bookID);
+            },
+              child: Icon(Icons.download_rounded),
+            ),
+          ],
+        ),
+      )
+  );
 }
