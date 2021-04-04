@@ -188,8 +188,14 @@ class LittleBookCard extends StatelessWidget {
                         onTap: publisher,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                          child: Container(
-                            child: Text(bookInfo.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20))),
+                            color: Colors.blueGrey[700],
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(6,3,6,3),
+                              child: Text(bookInfo.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                            ),
                           ),
                         ),
                       ),
@@ -492,8 +498,14 @@ class LibGenBookCard extends StatelessWidget {
                         onTap: ()=>publisherSearch(book.publisher),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                          child: Container(
-                            child: Text(book.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                          child: Card(
+                            color: Colors.blueGrey[700],
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(20))),
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(6,3,6,3),
+                              child: Text(book.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                            ),
                           ),
                         ),
                       ),
