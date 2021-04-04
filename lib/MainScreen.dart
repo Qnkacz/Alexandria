@@ -17,18 +17,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMixin {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey _textfieldkey= new GlobalKey();
   TextEditingController mainTextEditingController;
   TabController tabController;
   List<Widget> screens = [
 
   ];
-  List<TextEditingController> textControllers=[
-    Utilities.textEditingController,
-    LibGen.libGenTextController,
-    Utilities.sciHubTextController
-  ];
-
-
   enterBookNameZLib(){
     setState(() {
       Utilities.pageNumber = 1;
@@ -47,6 +43,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
         }
         else{
           mainTextEditingController.notifyListeners();
+          Utilities.lastZlibSearch=mainTextEditingController.text;
           if(Utilities.bookList.length>=50){
             GlobalWidgets.showMessageFlushBar(context, "Found at least "+Utilities.bookList.length.toString()+" books");
           }
@@ -74,6 +71,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
     })).then((value) {
       if(LibGen.libGenbookList.length!=0){
         mainTextEditingController.notifyListeners();
+        Utilities.lastLibGenSearch=mainTextEditingController.text;
         if(LibGen.libGenbookList.length>=100) {GlobalWidgets.showMessageFlushBar(context, "Found at least "+LibGen.libGenbookList.length.toString()+" books");}
         else{GlobalWidgets.showMessageFlushBar(context, "Found "+LibGen.libGenbookList.length.toString()+" books");}
       }
@@ -92,6 +90,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
           Utilities.sciHubAritcleList=value;
           print(Utilities.sciHubAritcleList.length);
           mainTextEditingController.notifyListeners();
+          Utilities.lastSciHubSearch=mainTextEditingController.text;
         })
     );
   }
@@ -126,15 +125,17 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
   void initState(){
     super.initState();
     tabController=new TabController(length: 3, vsync: this);
-    tabController.addListener(() {
-      print("current index: "+tabController.index.toString());
-    });
+
     mainTextEditingController = new TextEditingController();
+    tabController.addListener(() {
+      setState(() {
+        mainTextEditingController.text = Utilities.lastSearches[tabController.index];
+      });
+    });
     screens.add(zLibBody(controler: mainTextEditingController));
     screens.add(LibGenBody(controler: mainTextEditingController));
     screens.add(SciHubBody(controler: mainTextEditingController));
   }
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
@@ -174,13 +175,17 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
                                 child: Container(
                                   color: Color(0xff8c6f72),
                                   child: TextField(
+                                    key: _textfieldkey,
                                     onEditingComplete: (){
                                       if(tabController.index==0){
                                         enterBookNameZLib();
+                                        Utilities.lastSearches[0] = mainTextEditingController.text;
                                       }if(tabController.index==1){
                                         enterBookNameLibGen();
+                                        Utilities.lastSearches[1] = mainTextEditingController.text;
                                       }if(tabController.index==2){
                                         enterDOI();
+                                        Utilities.lastSearches[2] = mainTextEditingController.text;
                                       }
                                     }, //text
                                     textAlign: TextAlign.center,
@@ -188,7 +193,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
                                     cursorColor: Colors.white70,
                                     style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
                                     decoration: InputDecoration(
-                                      hintText: "Searched phrase goes here",
+                                      hintText: Utilities.hints[tabController.index],
                                       hintStyle: TextStyle(color: Colors.white70),
                                       border: InputBorder.none,
                                     ),

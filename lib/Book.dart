@@ -293,7 +293,7 @@ class SciHubArticle extends StatelessWidget {
                 //API_Manager.LaunchInBrowser(articleInfo.downloadURL);
               ,child: Icon(Icons.download_rounded),),
               MaterialButton(onPressed: ()=>Share.share(articleInfo.shareURL),child: Icon(Icons.share),),
-              MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(Utilities.sciHubRootSite+Utilities.sciHubTextController.text),
+              MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(Utilities.sciHubRootSite+Utilities.lastSciHubSearch),
                 child: Icon(Icons.chrome_reader_mode),),
             ],
           )

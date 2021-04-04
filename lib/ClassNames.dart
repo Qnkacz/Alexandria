@@ -21,10 +21,6 @@ class Utilities {
   static String search = "https://1lib.pl/s/";
   static String bookRoot = "https://1lib.pl/book/";
   static String sciHubRootSite = "https://sci-hub.se/";
-  static TextEditingController textEditingController =
-      new TextEditingController();
-  static TextEditingController sciHubTextController =
-      new TextEditingController();
   static List<LittlebookInfo> bookList = [];
   static List<SciHubArticleInfo> sciHubAritcleList = [];
   static String lastSearch;
@@ -35,6 +31,20 @@ class Utilities {
     "Pol",
     "Ger",
     "Rus",
+  ];
+  static String lastZlibSearch="Search phrase goes here!";
+  static String lastLibGenSearch="Search phrase goes here!";
+  static String lastSciHubSearch="Enter URL,PMID/DOI";
+
+  static List<String> lastSearches=[
+    "",
+    "",
+    ""
+  ];
+  static List<String> hints=[
+    "Search phrase goes here!",
+    "Search phrase goes here!",
+    "Enter URL,PMID/DOI"
   ];
 }
 
