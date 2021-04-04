@@ -66,9 +66,16 @@ class _zLibBodyState extends State<zLibBody> {
             if(Utilities.bookList.length==0){
               GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookName, :(");
             }
+            else{
+              if(Utilities.bookList.length>=50){
+                GlobalWidgets.showMessageFlushBar(context, "Found at least "+Utilities.bookList.length.toString()+" books");
+              }
+              else{
+                GlobalWidgets.showMessageFlushBar(context, "Found "+Utilities.bookList.length.toString()+" books");
+              }
+            }
           }),
-        )
-        .then((value) => print(Utilities.bookList.length));
+        );
   }
 
   void enterBookNameWithpage(int index) {

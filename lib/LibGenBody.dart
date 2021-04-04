@@ -26,7 +26,12 @@ class _LibGenBodyState extends State<LibGenBody> {
       if(value.length==0){
         GlobalWidgets.showErrorFlushBar(context, "Sorry, we couldn't find $bookname");
       }
-    }));
+    })).then((value) => {
+      if(LibGen.libGenbookList.length!=0){
+        if(LibGen.libGenbookList.length>=100) {GlobalWidgets.showMessageFlushBar(context, "Found at least "+LibGen.libGenbookList.length.toString()+" books")}
+        else{GlobalWidgets.showMessageFlushBar(context, "Found "+LibGen.libGenbookList.length.toString()+" books")}
+      }
+    });
   }
   searchPublisher(String name){
     setState(() {
@@ -43,7 +48,12 @@ class _LibGenBodyState extends State<LibGenBody> {
       if(value.length==0){
         GlobalWidgets.showErrorFlushBar(context, "Sorry, couldn't find $bookname, :(");
       }
-    }));
+    })).then((value) => {
+      if(LibGen.libGenbookList.length!=0){
+        if(LibGen.libGenbookList.length>=100) {GlobalWidgets.showMessageFlushBar(context, "Found at least "+LibGen.libGenbookList.length.toString()+" books")}
+        else{GlobalWidgets.showMessageFlushBar(context, "Found "+LibGen.libGenbookList.length.toString()+" books")}
+      }
+    });
   }
   @override
   void initState() {
