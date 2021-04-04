@@ -7,13 +7,32 @@ import 'package:z_lib_app/Options.dart';
 import 'package:z_lib_app/SciHubBody.dart';
 import 'package:z_lib_app/ZLibBody.dart';
 
+import 'ClassNames.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMixin {
+  TabController tabController;
+  List<Widget> screens = [
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0,0,0,42),
+      child: zLibBody(),
+    ),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0,0,0,42),
+      child: LibGenBody(),
+    ),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0,0,0,42),
+      child: SciHubBody(),
+    ),
+  ];
+  List<TextEditingController> textControllers=[
 
+  ];
   Future<bool> exitDialoge() {
     return showDialog(
         context: context,
@@ -42,6 +61,11 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
   @override
+  void initState(){
+    super.initState();
+    tabController=new TabController(length: 3, vsync: this);
+    tabController.addListener(() { print("current index: "+tabController.index.toString());});
+  }
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
@@ -58,30 +82,23 @@ class _MainScreenState extends State<MainScreen> {
           bottomSheet: Container(
             color: Colors.blueGrey[900],
             child: TabBar(
+              controller: tabController,
               indicatorColor: Color(0xFFD9B7AB),
               tabs: [
                 Container(
                   height: 40,
                     child: Center(child: Text("Z-lib", style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),))),
-                Text("Sci-hub",style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
                 Text("LibGen",style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
+                Text("Sci-hub",style: TextStyle(fontSize: 15,color: Colors.white70,fontStyle: FontStyle.italic),),
               ],
             ),
           ),
           body: TabBarView(
+            controller:tabController,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,42),
-                child: zLibBody(),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,42),
-                child: SciHubBody(),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,42),
-                child: LibGenBody(),
-              ),
+              screens[0],
+              screens[1],
+              screens[2],
             ],
           ),
         ),
