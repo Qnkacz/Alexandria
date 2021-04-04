@@ -338,7 +338,7 @@ class LibGenBookCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                    height: 350,
+                    height: 250,
                     child: Image.network(book.imageUrl)
                 ),
                 MoreInfoClickableInfo("title",book.title),
