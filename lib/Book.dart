@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -64,6 +66,43 @@ class LittleBookCard extends StatelessWidget {
   final Function publisher;
   final Function(String) authorSearch;
   LittleBookCard({this.bookInfo, this.publisher, this.authorSearch});
+  void ShowMoreInfo(BuildContext context, LittlebookInfo book)=>showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+        child: new Dialog(
+          backgroundColor: Colors.blueGrey.withOpacity(0.9),
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: Color(0xffD9B7AB))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    height: 350,
+                    child: Image.network(book.imageUrl)
+                ),
+                MoreInfoClickableInfo("title",book.title),
+                MoreInfoClickableInfo("publisher",book.publisher),
+                MoreInfoClickableInfo("authors",book.authors.join(" ")),
+                MoreInfoClickableInfo("file",book.file),
+                MoreInfoClickableInfo("language",book.leanguage),
+                MoreInfoClickableInfo("year",book.year),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MaterialButton(onPressed: ()=>Share.share(Utilities.siteRoot + book.bookID),child: Icon(Icons.share),),
+                    MaterialButton(onPressed: ()async{
+                      ApiManager.LaunchInBrowser(Utilities.siteRoot+book.bookID);
+                    },child: Icon(Icons.download_rounded),),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -79,21 +118,7 @@ class LittleBookCard extends StatelessWidget {
       children: [
         GestureDetector(
             onTap: () => {
-              if(bookInfo.imageUrl!="https://i.imgur.com/1mECa0I.png"){
-                ApiManager.getBookSiteFromId(bookInfo.bookID)
-                    .then((value) =>
-                {
-                  result = value
-                      .getElementsByClassName(
-                      "lightbox details-book-cover checkBookDownloaded")
-                      .first
-                      .attributes['href'],
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShowImage(bookInfo)))
-                })
-              }
+              ShowMoreInfo(context,bookInfo)
                 },
             child: Image.network(bookInfo.imageUrl)),
         Expanded(
@@ -148,7 +173,7 @@ class LittleBookCard extends StatelessWidget {
               ),
             ],
             child: GestureDetector(
-              onTap: ()=>GlobalWidgets.zLibDownloadDialog(context,bookInfo),
+              onTap: ()=>ShowMoreInfo(context,bookInfo),
               child: Card(
                 color: Color(0xff4f6773),
                 child: Column(
@@ -293,7 +318,64 @@ class LibGenBookCard extends StatelessWidget {
   LibGenBookInfo book;
   Function(String) publisherSearch;
   LibGenBookCard({this.book,this.publisherSearch});
+  void ShowMoreInfo(BuildContext context, LibGenBookInfo book)=>showDialog(
+      context: context,
+      builder: (context) => BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+        child: new Dialog(
+          backgroundColor: Colors.blueGrey.withOpacity(0.9),
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side: BorderSide(color: Color(0xffD9B7AB))),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    height: 350,
+                    child: Image.network(book.imageUrl)
+                ),
+                MoreInfoClickableInfo("title",book.title),
+                MoreInfoClickableInfo("series",book.series),
+                MoreInfoClickableInfo("publisher",book.publisher),
+                MoreInfoClickableInfo("authors",book.authors.join(" ")),
+                MoreInfoClickableInfo("ISBN",book.ISBN),
+                MoreInfoClickableInfo("pages",book.pages),
+                MoreInfoClickableInfo("file",book.size+" "+book.extention),
+                MoreInfoClickableInfo("language",book.language),
+                MoreInfoClickableInfo("year",book.year),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MaterialButton(onPressed: ()=>Share.share(book.bookURL),child: Icon(Icons.share),),
+                    MaterialButton(onPressed: ()async{
+                      ApiManager.getSite(book.bookURL).then((value)async{
+                        var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                        String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                        ApiManager.getSite(downloadUrl).then((value)async{
+                          String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
+                          print(downloadUrl);
+                          final status = await Permission.storage.request();
+                          if(status.isGranted){
 
+                            final externalDir = await getExternalStorageDirectory();
+
+                            final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
+
+                          }else{
+
+                          }
+                        });
+                      });
+                    },child: Icon(Icons.download_rounded),),
+                    MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(book.bookURL),child: Icon(Icons.web_asset_sharp),),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ));
   @override
   Widget build(BuildContext context) {
     bool visiblepublisher = true;
@@ -307,10 +389,7 @@ class LibGenBookCard extends StatelessWidget {
           flex: 1,
           child: GestureDetector(
               onTap: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShowMoreInfo(book)))
+                ShowMoreInfo(context,book)
               },
               child: Image.network(book.imageUrl,fit: BoxFit.fitWidth)),
         ),
@@ -397,56 +476,59 @@ class LibGenBookCard extends StatelessWidget {
                 ),
               ),
             ],
-            child: Card(
-              color: Color(0xff4f6773),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(book.title,style: TextStyle(color: Colors.white60),),
-                  ),
-                  Visibility(
-                    visible: visiblepublisher,
-                    child: GestureDetector(
-                      onTap: ()=>publisherSearch(book.publisher),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                        child: Container(
-                          child: Text(book.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+            child: GestureDetector(
+              onTap: ()=>ShowMoreInfo(context,book),
+              child: Card(
+                color: Color(0xff4f6773),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(book.title,style: TextStyle(color: Colors.white60),),
+                    ),
+                    Visibility(
+                      visible: visiblepublisher,
+                      child: GestureDetector(
+                        onTap: ()=>publisherSearch(book.publisher),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          child: Container(
+                            child: Text(book.publisher,style: TextStyle(color: Colors.white60,fontStyle: FontStyle.italic),),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: book.authors.length,
-                        itemBuilder: (context, index) {
-                          return LittleBookAuthors(book.authors[index],"cum",publisherSearch);
-                        }),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "Year: " + book.year,
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                      Text(
-                        "Language: " + book.language,
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                      Text(
-                        "FIle: " + book.extention+" "+book.size.substring(0,5),
-                        overflow: TextOverflow.fade,
-                        style: TextStyle(fontSize: 10,color: Colors.white60),
-                      ),
-                    ],
-                  )
-                ],
+                    SizedBox(
+                      height: 30,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: book.authors.length,
+                          itemBuilder: (context, index) {
+                            return LittleBookAuthors(book.authors[index],"cum",publisherSearch);
+                          }),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Year: " + book.year,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                        Text(
+                          "Language: " + book.language,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                        Text(
+                          "FIle: " + book.extention+" "+book.size.substring(0,5),
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 10,color: Colors.white60),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
