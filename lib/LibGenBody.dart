@@ -7,6 +7,8 @@ import 'package:z_lib_app/ClassNames.dart';
 import 'package:z_lib_app/ShowImage.dart';
 
 class LibGenBody extends StatefulWidget {
+  TextEditingController controler;
+  LibGenBody({this.controler});
   @override
   _LibGenBodyState createState() => _LibGenBodyState();
 }
@@ -59,7 +61,21 @@ class _LibGenBodyState extends State<LibGenBody> {
   @override
   void initState() {
     scrollController = new ScrollController()..addListener(_loadMore);
+    widget.controler.addListener(refresh);
     super.initState();
+  }
+  @override
+  void dispose(){
+    widget.controler.removeListener(refresh);
+    super.dispose();
+  }
+  void refresh(){
+    if(mounted)
+    {
+      setState(() {
+
+      });
+    }
   }
   void enterBookNameWithpage(int index) {
     FocusScope.of(context).unfocus();
@@ -107,49 +123,49 @@ class _LibGenBodyState extends State<LibGenBody> {
               book: LibGen.libGenbookList[index],
               publisherSearch: (String val)=>searchPublisher(val),
             );
-          })),
-      bottomSheet: Container(
-        color: Color(0xffd9b7ab),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: (){
-                    FocusScope.of(context).unfocus();
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
-                ),
-                Expanded(
-                    flex: 8,
-                    child: Container(
-                        color: Color(0xff8c6f72),
-                        child: TextField(
-                            onEditingComplete: (){
-                              if(LibGen.libGenTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
-                              else enterName();
-                            },//enterDOI(),
-                            textAlign: TextAlign.center,
-                            controller: LibGen.libGenTextController,
-                            cursorColor: Colors.white70,
-                            style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
-                            decoration: InputDecoration(
-                              hintText: "Searched phrase goes here",
-                              hintStyle: TextStyle(color: Colors.white70,fontStyle: FontStyle.italic),
-                              border: InputBorder.none,
-                            ))
-                    )
-                ),
-                Expanded(
-                    flex: 2,
-                    child: MaterialButton(onPressed: ()=>enterName(),child: Icon(Icons.search))),//enterDOI(),))
-              ],
-            ),
-          ],
-        ),
-      ),
+           })),
+      // bottomSheet: Container(
+      //   color: Color(0xffd9b7ab),
+      //   child: Column(
+      //     mainAxisSize: MainAxisSize.min,
+      //     children: [
+      //       Row(
+      //         children: [
+      //           IconButton(
+      //             onPressed: (){
+      //               FocusScope.of(context).unfocus();
+      //               Scaffold.of(context).openDrawer();
+      //             },
+      //             icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
+      //           ),
+      //           Expanded(
+      //               flex: 8,
+      //               child: Container(
+      //                   color: Color(0xff8c6f72),
+      //                   child: TextField(
+      //                       onEditingComplete: (){
+      //                         if(LibGen.libGenTextController.text.isEmpty) GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+      //                         else enterName();
+      //                       },//enterDOI(),
+      //                       textAlign: TextAlign.center,
+      //                       controller: LibGen.libGenTextController,
+      //                       cursorColor: Colors.white70,
+      //                       style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+      //                       decoration: InputDecoration(
+      //                         hintText: "Searched phrase goes here",
+      //                         hintStyle: TextStyle(color: Colors.white70,fontStyle: FontStyle.italic),
+      //                         border: InputBorder.none,
+      //                       ))
+      //               )
+      //           ),
+      //           Expanded(
+      //               flex: 2,
+      //               child: MaterialButton(onPressed: ()=>enterName(),child: Icon(Icons.search))),//enterDOI(),))
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

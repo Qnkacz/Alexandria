@@ -9,6 +9,8 @@ import 'package:z_lib_app/Book.dart';
 import 'package:z_lib_app/ClassNames.dart';
 
 class zLibBody extends StatefulWidget {
+  TextEditingController controler;
+  zLibBody({this.controler});
   @override
   _zLibBodyState createState() => _zLibBodyState();
 }
@@ -44,11 +46,17 @@ class _zLibBodyState extends State<zLibBody> {
         )
     );
   }
+  @override
   void initState() {
     scrollController = new ScrollController()..addListener(_loadMore);
+    widget.controler.addListener(refresh);
     super.initState();
   }
-
+  @override
+  void dispose() {
+    widget.controler.removeListener(refresh);
+    super.dispose();
+  }
   void enterBookName() {
     setState(() {
       Utilities.pageNumber = 1;
@@ -77,7 +85,6 @@ class _zLibBodyState extends State<zLibBody> {
           }),
         );
   }
-
   void enterBookNameWithpage(int index) {
     FocusScope.of(context).unfocus();
     ApiManager.goToSearchSite(index)
@@ -89,7 +96,14 @@ class _zLibBodyState extends State<zLibBody> {
         )
         .then((value) => print(Utilities.bookList.length));
   }
+  void refresh(){
+    if(mounted)
+      {
+        setState(() {
 
+        });
+      }
+  }
   void _loadMore() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
@@ -173,55 +187,58 @@ class _zLibBodyState extends State<zLibBody> {
                 }),
           ),
         ),
-        bottomSheet: Container(
-            color: Color(0xffd9b7ab),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: (){
-                        FocusScope.of(context).unfocus();
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
-                    ),
-                    Expanded(
-                        flex: 8,
-                        child: Container(
-                          color: Color(0xff8c6f72),
-                          child: TextField(
-                            onEditingComplete: (){
-                              if(Utilities.textEditingController.text.isEmpty) {
-                                GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
-                              }
-                              else {
-                                enterBookName();
-                              }
-                              }, //text
-                              textAlign: TextAlign.center,
-                              controller: Utilities.textEditingController,
-                              cursorColor: Colors.white70,
-                              style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
-                              decoration: InputDecoration(
-                              hintText: "Searched phrase goes here",
-                              hintStyle: TextStyle(color: Colors.white70),
-                              border: InputBorder.none,
-                              ),
-                              ),
-                              )),
-                              Expanded(
-                              flex: 2,
-                              child: MaterialButton(
-                              onPressed: ()=>enterBookName(),
-                              child: Icon(
-                              Icons.search,
-                              color: Color(0xff263740)
-                            )))
-                  ],
-                )
-              ],
-            )));
+        // Container(
+        //     color: Color(0xffd9b7ab),
+        //     child:
+        //     Column(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         Row(
+        //           children: [
+        //             IconButton(
+        //               onPressed: (){
+        //                 FocusScope.of(context).unfocus();
+        //                 Scaffold.of(context).openDrawer();
+        //               },
+        //               icon: FaIcon(FontAwesomeIcons.alignLeft,color: Color(0xff273840),),
+        //             ),
+        //             Expanded(
+        //                 flex: 8,
+        //                 child: Container(
+        //                   color: Color(0xff8c6f72),
+        //                   child: TextField(
+        //                     onEditingComplete: (){
+        //                       if(Utilities.textEditingController.text.isEmpty) {
+        //                         GlobalWidgets.showErrorFlushBar(context, "You have to search for something");
+        //                       }
+        //                       else {
+        //                         enterBookName();
+        //                       }
+        //                       }, //text
+        //                       textAlign: TextAlign.center,
+        //                       controller: Utilities.textEditingController,
+        //                       cursorColor: Colors.white70,
+        //                       style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+        //                       decoration: InputDecoration(
+        //                       hintText: "Searched phrase goes here",
+        //                       hintStyle: TextStyle(color: Colors.white70),
+        //                       border: InputBorder.none,
+        //                       ),
+        //                       ),
+        //                       )),
+        //                       Expanded(
+        //                       flex: 2,
+        //                       child: MaterialButton(
+        //                       onPressed: ()=>enterBookName(),
+        //                       child: Icon(
+        //                       Icons.search,
+        //                       color: Color(0xff263740)
+        //                     )))
+        //           ],
+        //         )
+        //       ],
+        //     )
+        // )
+    );
   }
 }
