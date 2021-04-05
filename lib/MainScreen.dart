@@ -137,6 +137,10 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
     screens.add(SciHubBody(controler: mainTextEditingController));
   }
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Color(0xff273238),
+      statusBarColor:Color(0xff273840)
+    ));
     return WillPopScope(
       onWillPop: (){
         exitDialoge();

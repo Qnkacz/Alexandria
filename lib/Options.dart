@@ -244,7 +244,7 @@ class _OptionsState extends State<Options> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        GlobalWidgets.showMessageFlushBar(context, "Copied PayPal address");
+                        GlobalWidgets.showMessageFlushBar(context, "IDk how to do paypal yet (╯°□°）╯︵ ┻━┻");
                       },
                       child: Card(
                         child: Padding(
