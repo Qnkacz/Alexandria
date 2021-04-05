@@ -235,7 +235,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.fromLTRB(0,0,0,42),
+            padding: const EdgeInsets.fromLTRB(0,0,0,90),
             child: TabBarView(
               controller:tabController,
               children: [

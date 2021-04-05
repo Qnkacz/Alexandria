@@ -61,6 +61,8 @@ flutter:
     - assets/nopic.png
     - assets/icon.png
     - assets/A_test.png
+    - assets/A_test_white.png
+    - assets/A_test_outline.png
     - assets/glowa.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -90,9 +92,9 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_native_splash:
   color: "#273840"
-  image: assets/A_test.png
+  image: assets/A_test_white.png
   android: true
 flutter_icons:
-  image_path: "assets/A_test.png"
+  image_path: "assets/A_test_outline.png"
   android: true
   iso: true

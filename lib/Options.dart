@@ -139,7 +139,7 @@ class _OptionsState extends State<Options> {
                 ///header
                 Container(
                   padding: EdgeInsets.zero,
-                  color: Color(0xffE8E8E8),
+                  color: Color(0xff273840),
                   child: Row(
                     children: [
                       Padding(
@@ -149,7 +149,7 @@ class _OptionsState extends State<Options> {
                             height: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage('assets/A_test.png'),
+                                    image: AssetImage('assets/A_test_white.png'),
                                     fit: BoxFit.fill))),
                       ),
                       Spacer(),
@@ -159,7 +159,7 @@ class _OptionsState extends State<Options> {
                           "Alexandria",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.sofia(
-                            textStyle: TextStyle(fontSize: 30)
+                            textStyle: TextStyle(fontSize: 30,color: Color(0xffe8e8e8))
                           ),
                         ),
                       )

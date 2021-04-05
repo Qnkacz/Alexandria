@@ -106,7 +106,7 @@ class _LibGenBodyState extends State<LibGenBody> {
               return Container();
             }
             if (index == LibGen.libGenbookList.length) {
-              if(LibGen.libGenbookList.length>=100){
+              if(LibGen.libGenbookList.length>=50){
                 return LinearProgressIndicator(
                   backgroundColor: Colors.grey[900],
                   valueColor:

@@ -366,12 +366,13 @@ class LibGenBookCard extends StatelessWidget {
 
                             final externalDir = await getExternalStorageDirectory();
 
-                            final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
-
+                            final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
+                          .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
                           }else{
 
                           }
                         });
+                        Navigator.pop(context);
                       });
                     },child: Icon(Icons.download_rounded),),
                     MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(book.bookURL),child: Icon(Icons.web_asset_sharp),),
@@ -471,7 +472,8 @@ class LibGenBookCard extends StatelessWidget {
 
                               final externalDir = await getExternalStorageDirectory();
 
-                              final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true);
+                              final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
+                                  .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
 
                             }else{
 
