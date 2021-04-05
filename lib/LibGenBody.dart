@@ -98,32 +98,39 @@ class _LibGenBodyState extends State<LibGenBody> {
   }
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: ListView.builder(
-          itemCount: LibGen.libGenbookList.length,
-          controller: scrollController,
-          itemBuilder: (context,index){
-            if (LibGen.libGenbookList.length == 0) {
-              return Container();
-            }
-            if (index == LibGen.libGenbookList.length) {
-              if(LibGen.libGenbookList.length>=50){
-                return LinearProgressIndicator(
-                  backgroundColor: Colors.grey[900],
-                  valueColor:
-                  new AlwaysStoppedAnimation<Color>(Colors.grey),
-                );
-              }
-              else{
+      body: SafeArea(
+          child: RawScrollbar(
+            controller: scrollController,
+            isAlwaysShown: true,
+            radius: Radius.circular(20),
+            thumbColor: Color(0xffD9B7AB).withOpacity(0.7),
+            child: ListView.builder(
+            itemCount: LibGen.libGenbookList.length,
+            controller: scrollController,
+            itemBuilder: (context,index){
+              if (LibGen.libGenbookList.length == 0) {
                 return Container();
               }
-            }
+              if (index == LibGen.libGenbookList.length) {
+                if(LibGen.libGenbookList.length>=50){
+                  return LinearProgressIndicator(
+                    backgroundColor: Colors.grey[900],
+                    valueColor:
+                    new AlwaysStoppedAnimation<Color>(Colors.grey),
+                  );
+                }
+                else{
+                  return Container();
+                }
+              }
 
-            //final item = LibGen.libGenbookList[index];
-            return LibGenBookCard(
-              book: LibGen.libGenbookList[index],
-              publisherSearch: (String val)=>searchPublisher(val),
-            );
-           })),
+              //final item = LibGen.libGenbookList[index];
+              return LibGenBookCard(
+                book: LibGen.libGenbookList[index],
+                publisherSearch: (String val)=>searchPublisher(val),
+              );
+             }),
+          )),
     );
   }
 }
