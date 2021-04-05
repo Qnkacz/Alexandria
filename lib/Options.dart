@@ -149,7 +149,7 @@ class _OptionsState extends State<Options> {
                             height: 50,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage('assets/A_test_white.png'),
+                                    image: AssetImage('assets/A_test.png'),
                                     fit: BoxFit.fill))),
                       ),
                       Spacer(),

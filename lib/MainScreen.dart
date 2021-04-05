@@ -141,6 +141,7 @@ class _MainScreenState extends State<MainScreen>with SingleTickerProviderStateMi
       systemNavigationBarColor: Color(0xff273238),
       statusBarColor:Color(0xff273840)
     ));
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return WillPopScope(
       onWillPop: (){
         exitDialoge();
