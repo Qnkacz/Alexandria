@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -355,25 +356,35 @@ class LibGenBookCard extends StatelessWidget {
                   children: [
                     MaterialButton(onPressed: ()=>Share.share(book.bookURL),child: Icon(Icons.share),),
                     MaterialButton(onPressed: ()async{
-                      ApiManager.getSite(book.bookURL).then((value)async{
-                        var Row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
-                        String downloadUrl = Row[3].children[0].children[0].children[0].children[0].attributes['href'];
-                        ApiManager.getSite(downloadUrl).then((value)async{
-                          String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
-                          print(downloadUrl);
-                          final status = await Permission.storage.request();
-                          if(status.isGranted){
+                      if(Platform.isAndroid){
+                        ApiManager.getSite(book.bookURL).then((value)async{
+                          var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                          String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                          ApiManager.getSite(downloadUrl).then((value)async{
+                            String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
+                            final status = await Permission.storage.request();
+                            if(status.isGranted){
 
-                            final externalDir = await getExternalStorageDirectory();
+                              final externalDir = await getExternalStorageDirectory();
 
-                            final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
-                          .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
-                          }else{
+                              final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
+                                  .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
 
-                          }
+                            }else{
+
+                            }
+                          });
                         });
-                        Navigator.pop(context);
-                      });
+                      }
+                      else{
+                        ApiManager.getSite(book.bookURL).then((value)async{
+                          var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                          String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                          ApiManager.getSite(downloadUrl).then((value)async{
+                            ApiManager.LaunchInBrowser(value.getElementById("download").children[2].children[0].children[0].attributes['href']);
+                          });
+                        });
+                      }
                     },child: Icon(Icons.download_rounded),),
                     MaterialButton(onPressed: ()=>ApiManager.LaunchInBrowser(book.bookURL),child: Icon(Icons.web_asset_sharp),),
                   ],
@@ -461,25 +472,35 @@ class LibGenBookCard extends StatelessWidget {
                     //
                     //     }
                     // });
-                    ApiManager.getSite(book.bookURL).then((value)async{
-                      var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
-                      String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
-                      ApiManager.getSite(downloadUrl).then((value)async{
-                        String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
-                        print(downloadUrl);
-                            final status = await Permission.storage.request();
-                            if(status.isGranted){
+                    if(Platform.isAndroid){
+                      ApiManager.getSite(book.bookURL).then((value)async{
+                        var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                        String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                        ApiManager.getSite(downloadUrl).then((value)async{
+                          String downloadUrl= value.getElementById("download").children[2].children[0].children[0].attributes['href'];
+                          final status = await Permission.storage.request();
+                          if(status.isGranted){
 
-                              final externalDir = await getExternalStorageDirectory();
+                            final externalDir = await getExternalStorageDirectory();
 
-                              final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
-                                  .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
+                            final id = await FlutterDownloader.enqueue(url: downloadUrl, savedDir: externalDir.path,fileName: book.title+"."+book.extention,showNotification: true,openFileFromNotification: true)
+                                .then((value) => GlobalWidgets.showMessageFlushBar(context, "Download Complete!"));
 
-                            }else{
+                          }else{
 
-                            }
+                          }
+                        });
                       });
-                    });
+                    }
+                    else{
+                      ApiManager.getSite(book.bookURL).then((value)async{
+                        var row = value.body.querySelectorAll('[rules="cols"][width="100%"][border="0"]');
+                        String downloadUrl = row[3].children[0].children[0].children[0].children[0].attributes['href'];
+                        ApiManager.getSite(downloadUrl).then((value)async{
+                          ApiManager.LaunchInBrowser(value.getElementById("download").children[2].children[0].children[0].attributes['href']);
+                        });
+                      });
+                    }
                   },
                 ),
               ),
