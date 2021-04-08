@@ -244,7 +244,7 @@ class _OptionsState extends State<Options> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        GlobalWidgets.showMessageFlushBar(context, "IDk how to do paypal yet (╯°□°）╯︵ ┻━┻");
+                        ApiManager.LaunchInBrowser("https://paypal.me/BartoszWasik");
                       },
                       child: Card(
                         child: Padding(
